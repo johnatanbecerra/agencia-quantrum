@@ -1,0 +1,7 @@
+Abre tu terminal asegurándote de estar dentro de la ruta de tu carpeta AGENCIA DIGITAL.
+
+Entra al cuarto secreto (Activa el entorno): Escribe el siguiente comando y presiona Enter:
+entorno\Scripts\activate
+(Sabrás que entraste con éxito porque en la terminal aparecerá la palabra (entorno) en color verde o al principio de la línea de comandos).
+
+Enciende el backend: Ahora que estás dentro, arranca tu archivo de servidor con el comando de FastAPI que estábamos utilizando (típicamente uvicorn main:app --reload).

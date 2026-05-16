@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTRUM | Desarrollo Web Premium</title>
+
+    <link rel="icon" type="image/png" href="quantrum_logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        background: '#000000',
+                        card: '#0a0a0a',
+                        border: 'rgba(59, 130, 246, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
+        .text-gradient { background: linear-gradient(to right, #3b82f6, #60a5fa, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* WhatsApp 3D */
+        @keyframes float3d {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        #whatsapp-fixed {
+            position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999;
+            background: radial-gradient(circle at 30% 30%, #5af191, #25d366 50%, #0c7569);
+            width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7);
+            animation: float3d 3s infinite ease-in-out; border: 1px solid #149c47;
+        }
+        #whatsapp-fixed:hover { animation-play-state: paused; transform: scale(1.15) rotate(-5deg) !important; }
+        .wa-logo { width: 40px; height: 40px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
+
+        /* Hero Image Background */
+        .service-hero {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,1)), url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo">
+    </a>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-primary/20">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-4">
+                <img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto">
+                <span class="text-2xl font-bold text-gradient">QUANTRUM</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 font-semibold">
+                <a href="index.html#inicio" class="hover:text-primary transition-colors">Volver al Inicio</a>
+                <a href="index.html#servicios" class="hover:text-primary transition-colors">Ver más Servicios</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="service-hero pt-48 pb-32 text-center px-6 border-b border-primary/20">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-6 text-white">
+                    <i data-lucide="code-2" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">Desarrollo <span class="text-gradient">Web</span> Premium</h1>
+                <p class="text-xl text-gray-300 mb-10">Creamos plataformas digitales ultrarrápidas, escalables y diseñadas para convertir visitantes en clientes fieles.</p>
+                <a href="#contacto-servicio" class="px-10 py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/40 hover:bg-blue-600 transition-all text-lg inline-block">Solicitar Cotización</a>
+            </div>
+        </section>
+
+        <section class="py-24 bg-[#050505] px-6">
+            <div class="container mx-auto max-w-6xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6">Tu negocio merece una <span class="text-gradient">presencia imponente</span></h2>
+                        <p class="text-gray-400 mb-6 leading-relaxed">No hacemos simples páginas web; construimos activos digitales. Utilizamos las tecnologías más modernas del mercado (como React.js, Next.js y Tailwind) para garantizar que tu sitio web sea veloz, seguro y adaptable a cualquier pantalla.</p>
+                        
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle" class="text-primary w-5 h-5"></i> Carga ultra rápida (Optimización de velocidad).</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle" class="text-primary w-5 h-5"></i> Diseño Responsive (Perfecto en celulares y tablets).</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle" class="text-primary w-5 h-5"></i> Arquitectura optimizada para SEO en Google.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle" class="text-primary w-5 h-5"></i> Integración con tus redes sociales y WhatsApp.</li>
+                        </ul>
+                    </div>
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-primary/20">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800" alt="Código y Diseño Web" class="w-full h-auto object-cover opacity-80 hover:opacity-100 transition-opacity">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto-servicio" class="py-24 bg-black px-6">
+            <div class="container mx-auto max-w-4xl">
+                <div class="bg-gradient-to-br from-primary/10 to-blue-950/20 border border-primary/30 rounded-3xl p-10 md:p-14 shadow-2xl">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold mb-4">Inicia tu <span class="text-gradient">Desarrollo Web</span></h2>
+                        <p class="text-gray-400">Déjanos tus datos y un arquitecto de software te contactará de inmediato.</p>
+                    </div>
+                    
+                    <form id="contact-form" class="space-y-6 text-left">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Nombre</label><input type="text" name="nombre" class="w-full bg-[#111] border border-border rounded-xl px-4 py-4 focus:border-primary outline-none" required></div>
+                            <div><label class="block text-sm font-semibold mb-2">Email</label><input type="email" name="correo" class="w-full bg-[#111] border border-border rounded-xl px-4 py-4 focus:border-primary outline-none" required></div>
+                        </div>
+                        <div><label class="block text-sm font-semibold mb-2">WhatsApp</label><input type="text" name="whatsapp" class="w-full bg-[#111] border border-border rounded-xl px-4 py-4 focus:border-primary outline-none"></div>
+                        
+                        <input type="hidden" name="servicio_origen" value="Desarrollo Web">
+                        
+                        <div><label class="block text-sm font-semibold mb-2">Detalles del Proyecto Web</label><textarea name="proyecto" rows="4" class="w-full bg-[#111] border border-border rounded-xl px-4 py-4 focus:border-primary outline-none resize-none" placeholder="Ej: Necesito una landing page para mi ferretería..." required></textarea></div>
+                        
+                        <button type="submit" class="w-full py-5 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-blue-600 transition-all text-lg">Solicitar Desarrollo Web</button>
+                        <p id="form-status" class="text-center font-bold hidden mt-4"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#050505] border-t border-primary/20 py-16 px-6">
+        <div class="container mx-auto text-center">
+            <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto mx-auto mb-4">
+            <p class="text-gray-500 text-sm mb-4">Agencia Digital QUANTRUM. Valencia, Venezuela.</p>
+            <div class="pt-4 border-t border-border text-gray-600 text-xs">© 2026 Todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => { lucide.createIcons(); });
+        
+        const BACKEND_URL = 'http://127.0.0.1:8000';
+        document.getElementById('contact-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('form-status');
+            const data = Object.fromEntries(new FormData(e.target));
+            
+            // Agregamos al mensaje el servicio de origen para que sepas en Supabase qué quería
+            data.proyecto = `[INTERESADO EN DESARROLLO WEB] - ` + data.proyecto;
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/contacto`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if(res.ok) {
+                    status.innerText = "✓ Solicitud de Desarrollo Web enviada.";
+                    status.className = "text-center font-bold text-primary block mt-4";
+                    e.target.reset();
+                }
+            } catch {
+                status.innerText = "✗ Backend offline. Escríbenos por WhatsApp.";
+                status.className = "text-center font-bold text-red-500 block mt-4";
+            }
+        };
+    </script>
+</body>
+</html>

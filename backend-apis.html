@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTRUM | Arquitectura Backend y APIs</title>
+    
+    <link rel="icon" type="image/png" href="quantrum_logo.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        border: 'rgba(59, 130, 246, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #020617 0%, #000000 50%, #082f49 100%); background-attachment: fixed; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #93c5fd, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .bg-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); z-index: -2; pointer-events: none; }
+        @keyframes float3d { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); } 100% { transform: translateY(0) scale(1); } }
+        #whatsapp-fixed { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999; background: radial-gradient(circle at 30% 30%, #5af191, #25d366 50%, #0c7569); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); animation: float3d 3s infinite ease-in-out; border: 1px solid #149c47; }
+        #whatsapp-fixed:hover { animation-play-state: paused; transform: scale(1.15) rotate(-5deg) !important; }
+        .wa-logo { width: 40px; height: 40px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
+        .service-hero { background-image: linear-gradient(to bottom, rgba(2,6,23,0.8), rgba(0,0,0,1)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920'); background-size: cover; background-position: center; background-attachment: fixed; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="bg-grid"></div>
+
+    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo">
+    </a>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-lg border-b border-white/10 shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-4">
+                <img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto">
+                <span class="text-2xl font-bold text-gradient">QUANTRUM</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 font-semibold text-gray-200">
+                <a href="index.html#inicio" class="hover:text-blue-400 transition-colors">Volver al Inicio</a>
+                <a href="index.html#servicios" class="hover:text-blue-400 transition-colors">Ver más Servicios</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="service-hero pt-48 pb-32 text-center px-6 border-b border-white/10">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 border border-blue-400/30 backdrop-blur-md rounded-2xl mb-6 text-blue-400">
+                    <i data-lucide="database" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">Backend & <span class="text-gradient">APIs</span></h1>
+                <p class="text-xl text-gray-300 mb-10 font-light">El motor invisible que hace que tu negocio funcione. Construimos infraestructuras de datos escalables, seguras y capaces de soportar miles de usuarios simultáneos sin pestañear.</p>
+                <a href="#contacto-servicio" class="px-10 py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-blue-500/40 hover:bg-blue-600 transition-all text-lg inline-block">Consultar a un Especialista</a>
+            </div>
+        </section>
+
+        <section class="py-24 bg-white/[0.02] backdrop-blur-sm px-6">
+            <div class="container mx-auto max-w-6xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/20 border border-blue-500/20">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800" alt="Arquitectura de Software y Servidores" class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6">El cerebro de tu <span class="text-gradient">operación digital</span></h2>
+                        <p class="text-gray-400 mb-6 font-light leading-relaxed">Una interfaz hermosa se derrumba si la base de datos es lenta o insegura. Diseñamos la lógica interna de tu aplicación utilizando lenguajes robustos como Python (FastAPI/Django) y Node.js, asegurando la integridad total de tu información.</p>
+                        
+                        <ul class="space-y-4 font-light">
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="server" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Desarrollo de APIs RESTful limpias, rápidas y documentadas.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="hard-drive" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Arquitectura y optimización de bases de datos (SQL y NoSQL).</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="cloud" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Despliegue en la nube (AWS, Supabase, Google Cloud).</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="lock" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Sistemas de autenticación segura, encriptación y control de roles.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto-servicio" class="py-24 px-6 border-t border-white/5">
+            <div class="container mx-auto max-w-4xl">
+                <div class="bg-[#020617]/70 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-10 shadow-2xl">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold mb-4 text-white">Construye tu <span class="text-gradient">Infraestructura</span></h2>
+                        <p class="text-gray-300 font-light">Comunícate con nuestros especialistas y plantea los requerimientos técnicos de tu proyecto.</p>
+                    </div>
+                    
+                    <form id="contact-form" class="space-y-6 text-left">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2 text-gray-200">Nombre</label><input type="text" name="nombre" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
+                            <div><label class="block text-sm font-semibold mb-2 text-gray-200">Email</label><input type="email" name="correo" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
+                        </div>
+                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">WhatsApp</label><input type="text" name="whatsapp" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white"></div>
+                        <input type="hidden" name="servicio_origen" value="Backend & APIs">
+                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Requerimientos Técnicos (Opcional)</label><textarea name="proyecto" rows="4" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none resize-none text-white" placeholder="Ej: Necesitamos conectar nuestro sistema de inventario con una API de facturación..." required></textarea></div>
+                        <button type="submit" class="w-full py-5 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all text-lg">Contactar al Equipo Técnico</button>
+                        <p id="form-status" class="text-center font-bold hidden mt-4"></p>
+                    </form>
+                </div>
+            </div>
+        </section

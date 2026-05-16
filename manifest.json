@@ -1,0 +1,21 @@
+{
+  "short_name": "QUANTRUM",
+  "name": "QUANTRUM | Agencia Digital de Élite",
+  "icons": [
+    {
+      "src": "quantrum_logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "quantrum_logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0B1120",
+  "theme_color": "#3b82f6",
+  "display": "standalone",
+  "orientation": "portrait"
+}
