@@ -4,12 +4,23 @@ import urllib.error
 import json
 import time
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from supabase import create_client, Client
 
 app = FastAPI()
+
+# --- CONFIGURACIÓN DE CORS PARA PERMITIR CONEXIÓN DESDE GITHUB PAGES ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite que cualquier dominio se conecte a tu API
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],  # Permite todos los encabezados
+)
+# -----------------------------------------------------------------------
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
