@@ -1,14 +1,11 @@
 import os
-import urllib.request
-import urllib.error
-import json
-import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from supabase import create_client, Client
+import google.generativeai as genai
 
 app = FastAPI()
 
@@ -36,6 +33,14 @@ try:
 except Exception as e:
     print(f"⚠ Error Supabase: {e}")
 
+# --- CONFIGURACIÓN OFICIAL DE GOOGLE GEMINI ---
+if GEMINI_API_KEY and len(GEMINI_API_KEY) > 20:
+    genai.configure(api_key=GEMINI_API_KEY)
+    # Usamos el modelo base para garantizar compatibilidad total
+    model = genai.GenerativeModel('gemini-pro')
+else:
+    model = None
+
 class ContactoForm(BaseModel):
     nombre: str; correo: str; whatsapp: str; proyecto: str
 
@@ -53,45 +58,20 @@ async def recibir_contacto(form: ContactoForm):
 
 @app.post("/api/chat")
 async def chat_quantrum(req: ChatRequest):
-    if not GEMINI_API_KEY or len(GEMINI_API_KEY) < 20:
-        return {"response": "Requiero una API Key real."}
-    
-    # URL CORREGIDA: Agregamos "-latest" para compatibilidad total con Google
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}"
+    if not model:
+        return {"response": "API Key de Gemini no detectada."}
     
     system_instruction = "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés (máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. Responde en español, profesional y tecnológico."
     
-    payload = {
-        "contents": [{"parts": [{"text": req.message}]}],
-        "systemInstruction": {"parts": [{"text": system_instruction}]},
-        "generationConfig": {"maxOutputTokens": 150, "temperature": 0.4}
-    }
-    req_data = json.dumps(payload).encode("utf-8")
-    request = urllib.request.Request(url, data=req_data, headers={"Content-Type": "application/json"}, method="POST")
-
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(request, timeout=10) as response:
-                res_body = json.loads(response.read().decode("utf-8"))
-                return {"response": res_body['candidates'][0]['content']['parts'][0]['text'].strip()}
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < 2:
-                time.sleep((2 ** attempt) + 1)
-                continue
-            
-            error_msg = e.read().decode("utf-8")
-            try:
-                error_json = json.loads(error_msg)
-                real_message = error_json.get("error", {}).get("message", "Error desconocido")
-            except:
-                real_message = error_msg
-                
-            return {"response": f"Código {e.code}: {real_message}"}
-            
-        except Exception as e:
-            return {"response": f"Fluctuación en el canal local: {str(e)}"}
-            
-    return {"response": "Error de conexión temporal tras múltiples intentos."}
+    # Inyectamos el contexto directamente en el prompt
+    prompt = f"Instrucciones de comportamiento: {system_instruction}\n\nMensaje del cliente: {req.message}\nRespuesta de Chat Quantrum Pro:"
+    
+    try:
+        # Generación nativa con la librería de Google
+        response = model.generate_content(prompt)
+        return {"response": response.text.strip()}
+    except Exception as e:
+        return {"response": f"Error interno de IA: {str(e)}"}
 
 @app.get("/")
 async def read_index(): return FileResponse('index.html')
