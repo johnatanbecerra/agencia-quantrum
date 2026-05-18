@@ -3,67 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTRUM | Agencia Digital de Élite</title>
     
-    <title>QUANTRUM | Agencia Digital de Élite y Desarrollo Web Premium</title>
-    <meta name="description" content="Elevamos tu potencial digital. Agencia de élite especializada en desarrollo web corporativo, aplicaciones PWA, plataformas E-commerce escalables y diseño UI/UX.">
-    <meta name="keywords" content="agencia digital, desarrollo web premium, aplicaciones PWA, desarrollo e-commerce, diseño UI UX, agencia SEO, desarrollo de software, Venezuela, global">
-    <meta name="author" content="QUANTRUM">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://quantrum.com">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="QUANTRUM | Agencia Digital de Élite">
-    <meta property="og:description" content="Transformamos tu visión corporativa en código puro. Ecosistemas digitales, PWAs y E-commerce de alto rendimiento.">
-    <meta property="og:image" content="./quantrum_logo.png">
-    <meta property="og:url" content="https://quantrum.com">
-    <meta property="og:site_name" content="QUANTRUM">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="QUANTRUM | Desarrollo Digital Premium">
-    <meta name="twitter:description" content="Soluciones robustas en desarrollo web, apps y automatización para empresas que no aceptan menos que la excelencia.">
-    <meta name="twitter:image" content="./quantrum_logo.png">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "QUANTRUM Agencia Digital",
-      "image": "https://quantrum.com/quantrum_logo.png",
-      "description": "Agencia digital de élite especializada en desarrollo web corporativo, aplicaciones PWA, E-commerce y optimización SEO con atención a nivel mundial.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Valencia",
-        "addressRegion": "Carabobo",
-        "addressCountry": "VE"
-      },
-      "areaServed": "Worldwide",
-      "telephone": "+584129550884",
-      "email": "info@quantrum.com",
-      "url": "https://quantrum.com",
-      "priceRange": "$$$",
-      "sameAs": [
-        "https://www.linkedin.com/company/quantrum",
-        "https://www.instagram.com/quantrum"
-      ]
-    }
-    </script>
-
+    <meta name="description" content="Soluciones robustas en desarrollo web, apps y automatización para empresas que no aceptan menos que la excelencia.">
     <link rel="icon" type="image/png" href="quantrum_logo.png">
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#020617">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3b82f6',
-                        border: 'rgba(59, 130, 246, 0.3)',
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { primary: '#3b82f6', border: 'rgba(59, 130, 246, 0.3)' } } } }
     </script>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -73,53 +21,76 @@
         body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #020617 0%, #000000 50%, #082f49 100%); background-attachment: fixed; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
         .bg-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); z-index: -2; pointer-events: none; }
         .text-gradient { background: linear-gradient(to right, #60a5fa, #93c5fd, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        @keyframes float3d { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); } 100% { transform: translateY(0) scale(1); } }
         
+        /* BOTÓN DE DESCARGAR APP FLOTANTE REDONDEADO (ESQUINA INFERIOR IZQUIERDA) */
+        #pwa-install-btn {
+            position: fixed !important;
+            bottom: 30px !important;
+            left: 30px !important;
+            z-index: 9999;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.3), inset 0 5px 10px rgba(255,255,255,0.4);
+            border: 1px solid #60a5fa;
+            transition: all 0.3s ease;
+            color: white;
+            cursor: pointer;
+        }
+        #pwa-install-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5);
+        }
+        .pwa-text { display: none; }
+
+        /* AJUSTE PARA PANTALLAS GRANDES PC (SE EXPANDE CON TEXTO EN LA ESQUINA) */
+        @media (min-width: 768px) {
+            #pwa-install-btn {
+                width: auto;
+                height: auto;
+                border-radius: 12px;
+                padding: 12px 24px;
+                position: fixed !important;
+                bottom: 30px !important;
+                left: 30px !important;
+            }
+            .pwa-text { display: inline-block; margin-left: 8px; font-weight: bold; font-size: 0.9rem; }
+        }
+
+        /* CHATBOT Y WHATSAPP FLOTANTES (DERECHA) */
+        @keyframes float3d { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.05); } 100% { transform: translateY(0) scale(1); } }
         #whatsapp-fixed { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999; background: radial-gradient(circle at 30% 30%, #5af191, #25d366 50%, #0c7569); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); animation: float3d 3s infinite ease-in-out; border: 1px solid #149c47; }
         .wa-logo { width: 40px; height: 40px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
-
-        #pwa-install-fab { position: fixed !important; bottom: 30px !important; left: 30px !important; z-index: 9998; background: linear-gradient(135deg, #1d4ed8, #3b82f6, #60a5fa); display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 28px; border-radius: 50px; box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4), inset 0 2px 5px rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; cursor: pointer; }
-        #pwa-install-fab:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.6), inset 0 2px 5px rgba(255,255,255,0.4); }
-        .pwa-icon { width: 28px; height: 28px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
-        .pwa-text { font-size: 16px; font-weight: 700; color: #fff; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
-        .pwa-visible { animation: pwaPop 0.6s ease-out forwards; }
-        @keyframes pwaPop { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 70% { transform: scale(1.1) rotate(3deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
-
-        /* CHATBOT FAB CON PNG TRANSPARENTE */
+        
         @keyframes floatBotFree { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.06); } 100% { transform: translateY(0) scale(1); } }
         #chat-toggle-btn { position: fixed !important; bottom: 120px !important; right: 28px !important; z-index: 9999; background: transparent !important; border: none !important; box-shadow: none !important; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; cursor: pointer; animation: floatBotFree 3.5s infinite ease-in-out; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.7)); transition: transform 0.2s ease, filter 0.2s ease; }
         #chat-toggle-btn:hover { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)); }
-        #chat-toggle-btn img { width: 100%; height: 100%; object-fit: contain; } /* Se eliminó el mix-blend-mode ya que es PNG */
-
-        .service-image-card { position: relative; overflow: hidden; border-radius: 1rem; border: 1px solid rgba(59, 130, 246, 0.2); height: 300px; display: flex; align-items: flex-end; transition: all 0.4s ease; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
-        .service-image-card .bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.6s ease; z-index: 0; opacity: 0.8; }
-        .service-image-card .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.3) 70%, transparent 100%); z-index: 1; }
-        .service-image-card .content { position: relative; z-index: 2; padding: 1.5rem; width: 100%; }
-        .service-image-card:hover { border-color: #60a5fa; transform: translateY(-5px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3); }
-        .service-image-card:hover .bg-img { transform: scale(1.08); opacity: 1; }
+        #chat-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
         
-        .testimonial-card { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.2); padding: 2rem; border-radius: 1.5rem; transition: all 0.3s ease; }
-        .testimonial-card:hover { border-color: #60a5fa; background: rgba(15, 23, 42, 0.8); transform: translateY(-3px); }
-        .quote-icon { color: #60a5fa; font-size: 3rem; margin-bottom: 0.5rem; opacity: 0.8; line-height: 1; }
-        .hero-glow { position: absolute; width: 600px; height: 600px; background: rgba(59, 130, 246, 0.15); border-radius: 50%; filter: blur(120px); z-index: -1; }
-        .dark-map { filter: invert(90%) hue-rotate(180deg) contrast(1.2) grayscale(0.3); border-radius: 1.5rem; width: 100%; }
-        #chat-messages::-webkit-scrollbar { width: 4px; }
-        #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+        #chat-messages::-webkit-scrollbar { width: 4px; } #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+        .hero-glow { position: absolute; width: 600px; height: 600px; background: rgba(59, 130, 246, 0.12); border-radius: 50%; filter: blur(120px); z-index: -1; }
+        
+        .service-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 1.5rem; transition: all 0.3s ease; backdrop-filter: blur(8px); }
+        .service-card:hover { border-color: #3b82f6; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1); }
     </style>
 </head>
 <body class="min-h-screen">
 
     <div class="bg-grid"></div>
 
-    <div id="pwa-install-fab" class="hidden">
-        <i data-lucide="download" class="pwa-icon text-white"></i>
+    <button id="pwa-install-btn">
+        <i data-lucide="download" class="w-6 h-6"></i>
         <span class="pwa-text">Obtener App Quantrum</span>
-    </div>
+    </button>
 
     <button id="chat-toggle-btn">
         <img src="bot_logo.png" alt="Bot Quantrum Pro">
     </button>
-
+    
     <div id="chat-box" class="hidden fixed bottom-[210px] right-[30px] z-[9999] w-[350px] h-[460px] bg-slate-950/95 border border-blue-500/30 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden">
         <div class="bg-gradient-to-r from-blue-950 to-slate-900 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -129,23 +100,22 @@
             <button id="chat-close-btn" class="text-gray-400 hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs flex flex-col">
-            <div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start leading-relaxed shadow-md">
-                ¡Hola! Soy <strong>Chat Quantrum Pro</strong>, tu asesor inteligente de IA de élite. ¿En qué solución o desarrollo podemos ayudarte hoy?
-            </div>
+            <div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start leading-relaxed shadow-md">¡Hola! Soy <strong>Chat Quantrum Pro</strong>, tu asesor inteligente de IA de élite. ¿En qué solución o desarrollo podemos ayudarte hoy?</div>
         </div>
         <form id="chat-form-widget" class="p-3 border-t border-blue-500/20 flex gap-2 bg-black/40">
             <input type="text" id="chat-input" placeholder="Pregúntame sobre PWAs, SEO o Webs..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 outline-none" autocomplete="off">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-2 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-2 w-8 h-8 flex items-center justify-center cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
         </form>
     </div>
-
-    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo">
-    </a>
+    
+    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo"></a>
 
     <header class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-lg border-b border-white/10 shadow-lg">
         <nav class="container mx-auto px-6 py-4 flex items-center justify-between relative">
-            <div class="flex items-center gap-4"><img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto"><span class="text-2xl font-bold text-gradient">QUANTRUM</span></div>
+            <a href="index.html" class="flex items-center gap-4">
+                <img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto">
+                <span class="text-2xl font-bold text-gradient">QUANTRUM</span>
+            </a>
             <div class="hidden md:flex items-center gap-8 font-semibold text-gray-200">
                 <a href="#inicio" class="hover:text-blue-400 transition-colors">Inicio</a>
                 <a href="#servicios" class="hover:text-blue-400 transition-colors">Servicios</a>
@@ -154,14 +124,15 @@
                 <a href="nosotros.html" class="hover:text-blue-400 transition-colors">Nosotros</a>
                 <a href="#contacto" class="hover:text-blue-400 transition-colors">Contacto</a>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none flex items-center"><i data-lucide="menu" class="w-8 h-8"></i></button>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none flex items-center">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden bg-[#020617]/95 backdrop-blur-xl border-b border-white/10 absolute w-full left-0 top-full shadow-2xl">
             <div class="flex flex-col px-6 py-6 space-y-5 font-semibold text-gray-200 text-center">
                 <a href="#inicio" class="mobile-link block hover:text-blue-400 transition-colors">Inicio</a>
                 <a href="#servicios" class="mobile-link block hover:text-blue-400 transition-colors">Servicios</a>
                 <a href="#por-que" class="mobile-link block hover:text-blue-400 transition-colors">¿Por Qué Elegirnos?</a>
-                <a href="#portafolio" class="mobile-link block hover:text-blue-400 transition-colors">Testimonios</a>
                 <a href="nosotros.html" class="mobile-link block hover:text-blue-400 transition-colors">Nosotros</a>
                 <a href="#contacto" class="mobile-link block hover:text-blue-400 transition-colors">Contacto</a>
             </div>
@@ -169,100 +140,86 @@
     </header>
 
     <main>
-        <section id="inicio" class="pt-52 pb-28 text-center px-4 relative overflow-hidden min-h-[90vh] flex items-center justify-center z-10">
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 filter blur-[6px] opacity-35 pointer-events-none">
-                <source src="video_equipo.mp4" type="video/mp4">
-            </video>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#020617] z-10 pointer-events-none"></div>
-            <div class="hero-glow top-1/4 left-1/4"></div><div class="hero-glow bottom-1/4 right-1/4 bg-blue-500/10"></div>
-            <div class="max-w-5xl mx-auto relative z-20">
-                <div class="inline-block px-5 py-2 bg-blue-500/10 border border-blue-400/20 backdrop-blur-md rounded-full mb-8 text-blue-300 text-sm font-semibold tracking-wide">✨ Tecnología de Vanguardia</div>
-                <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">Elevamos tu <span class="text-gradient">Potencial Digital</span></h1>
-                <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto font-light">Soluciones robustas en desarrollo web, apps y automatización para empresas que no aceptan menos que la excelencia.</p>
-                <div class="flex flex-wrap justify-center gap-6">
-                    <a href="#contacto" class="px-10 py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-blue-500/40 hover:bg-blue-600 transition-all text-lg">Cotizar Proyecto</a>
+        <section id="inicio" class="pt-48 pb-24 text-center px-4 relative z-10 min-h-screen flex items-center justify-center">
+            <div class="hero-glow top-1/4 left-1/2 -translate-x-1/2 bg-blue-600/10"></div>
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-block px-4 py-1.5 bg-blue-500/10 border border-blue-400/20 backdrop-blur-md rounded-full mb-6 text-blue-300 text-xs font-semibold tracking-wide">
+                    ✨ Tecnología de Vanguardia
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-none">Elevamos tu <span class="text-gradient">Potencial Digital</span></h1>
+                <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed max-w-2xl mx-auto mb-10">Soluciones robustas en desarrollo web, apps y automatización para empresas que no aceptan menos que la excelencia.</p>
+                <a href="#contacto" class="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-all inline-block">Cotizar Proyecto</a>
+            </div>
+        </section>
+
+        <section id="servicios" class="py-24 px-6 relative z-10 border-t border-white/5 bg-slate-950/20">
+            <div class="container mx-auto max-w-6xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Servicios de <span class="text-gradient">Élite</span></h2>
+                    <p class="text-gray-400 max-w-xl mx-auto font-light">Ingeniería digital de alto rendimiento para objetivos comerciales exigentes.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="service-card p-8">
+                        <i data-lucide="globe" class="w-12 h-12 text-blue-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-3">Desarrollo Web Premium</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">Sitios corporativos rápidos, seguros y completamente optimizados para conversiones de alto impacto.</p>
+                        <a href="desarrollo-web.html" class="text-blue-400 text-sm font-semibold hover:underline inline-flex items-center gap-1">Saber más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                    <div class="service-card p-8">
+                        <i data-lucide="smartphone" class="w-12 h-12 text-blue-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-3">Aplicaciones PWA</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">Aplicaciones web progresivas instalables que emulan la experiencia nativa de iOS y Android sin fricción.</p>
+                        <a href="aplicaciones-pwa.html" class="text-blue-400 text-sm font-semibold hover:underline inline-flex items-center gap-1">Saber más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                    <div class="service-card p-8">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 text-blue-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-3">E-Commerce Robusto</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">Ecosistemas de comercio electrónico automatizados, con pasarelas de pago fluidas y control de inventarios.</p>
+                        <a href="ecommerce.html" class="text-blue-400 text-sm font-semibold hover:underline inline-flex items-center gap-1">Saber más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="servicios" class="py-24 bg-white/[0.02] backdrop-blur-sm border-y border-white/10 px-6 relative z-10">
-            <div class="container mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Nuestros <span class="text-gradient">Servicios & Soluciones</span></h2>
-                <p class="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">Explora nuestro catálogo de productos y servicios diseñados para escalar tu negocio.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left max-w-7xl mx-auto">
-                    <a href="desarrollo-web.html" class="block"><div class="service-image-card"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><h3 class="text-xl font-bold text-white mb-2">Desarrollo Web</h3><p class="text-gray-300 text-sm font-light">Sitios corporativos de alto rendimiento con React y Next.js.</p></div></div></a>
-                    <a href="aplicaciones-pwa.html" class="block"><div class="service-image-card"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><h3 class="text-xl font-bold text-white mb-2">Aplicaciones PWA</h3><p class="text-gray-300 text-sm font-light">Apps instalables que ofrecen experiencia nativa en móviles.</p></div></div></a>
-                    <a href="diseno-ui-ux.html" class="block"><div class="service-image-card"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><h3 class="text-xl font-bold text-white mb-2">Diseño UI/UX</h3><p class="text-gray-300 text-sm font-light">Interfaces premium centradas en la psicología del usuario.</p></div></div></a>
-                    <a href="ecommerce.html" class="block"><div class="service-image-card border-blue-400/40 shadow-blue-900/30"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><p class="text-blue-300 text-xs font-bold uppercase tracking-wider mb-1">Producto Elite</p><h3 class="text-xl font-bold text-white mb-2">E-Commerce Platforms</h3><p class="text-gray-300 text-sm font-light">Tiendas escalables con pasarelas de pago globales.</p></div></div></a>
-                    <a href="optimizacion-seo.html" class="block"><div class="service-image-card"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><h3 class="text-xl font-bold text-white mb-2">Optimización SEO</h3><p class="text-gray-300 text-sm font-light">Dominio total de los resultados de búsqueda en Google.</p></div></div></a>
-                    <a href="backend-apis.html" class="block"><div class="service-image-card"><div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800');"></div><div class="overlay"></div><div class="content"><h3 class="text-xl font-bold text-white mb-2">Backend & APIs</h3><p class="text-gray-300 text-sm font-light">Arquitecturas en la nube seguras y ultra-rápidas.</p></div></div></a>
+        <section id="contacto" class="py-24 px-6 relative z-10">
+            <div class="container mx-auto max-w-3xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Inicia tu <span class="text-gradient">Transformación</span></h2>
+                    <p class="text-gray-400 font-light">Completa el formulario y un especialista auditará tu proyecto sin costo.</p>
                 </div>
-            </div>
-        </section>
-
-        <section id="por-que" class="py-24 px-6 bg-[#0B1120] relative z-10 border-b border-white/5">
-            <div class="container mx-auto text-center max-w-7xl">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">¿Por Qué <span class="text-gradient">Elegirnos?</span></h2>
-                <p class="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">Características que nos hacen tu mejor opción en el mercado digital.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Desarrollo Rápido</h3><p class="text-gray-400 text-sm font-light">Entregamos proyectos en tiempo récord mediante metodologías ágiles, sin comprometer la calidad.</p></div></div>
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Equipo Experto</h3><p class="text-gray-400 text-sm font-light">Profesionales y especialistas certificados con años de experiencia en la industria tecnológica.</p></div></div>
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Soporte 24/7</h3><p class="text-gray-400 text-sm font-light">Asistencia técnica continua y monitoreo de sistemas para resolver incidencias de manera inmediata.</p></div></div>
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Garantía de Calidad</h3><p class="text-gray-400 text-sm font-light">Testing exhaustivo (QA) y auditorías de código para asegurar la entrega de un producto impecable.</p></div></div>
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Escalabilidad</h3><p class="text-gray-400 text-sm font-light">Arquitecturas flexibles preparadas para crecer al mismo ritmo que lo hace tu negocio.</p></div></div>
-                    <div class="bg-[#1E293B]/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl overflow-hidden hover:border-blue-400 transition-all group shadow-lg"><div class="h-48 overflow-hidden relative"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-[#1E293B] to-transparent opacity-80"></div></div><div class="p-8 pt-4"><h3 class="font-bold text-xl mb-3 text-white">Seguridad Total</h3><p class="text-gray-400 text-sm font-light">Implementamos las mejores prácticas de ciberseguridad para proteger tu información.</p></div></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="portafolio" class="py-24 px-6 relative z-10">
-            <div class="container mx-auto text-center max-w-7xl">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6">Lo que dicen <span class="text-gradient">nuestros clientes</span></h2>
-                <p class="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">La confianza de líderes empresariales respalda nuestra calidad.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">La WebApp que QUANTRUM desarrolló para nuestra Fintech superó todas las expectativas. La velocidad de carga y la seguridad son de otro nivel.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">RM</div><div><h4 class="font-bold text-sm text-white">Ricardo Méndez</h4><p class="text-blue-400 text-xs">CEO - PayFlow Solutions</p></div></div></div>
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">Nuestra aplicación de logística ahora gestiona miles de pedidos diarios sin un solo fallo. Son expertos reales en lo que hacen.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">SL</div><div><h4 class="font-bold text-sm text-white">Sofía López</h4><p class="text-blue-400 text-xs">Directora - LogiTrack</p></div></div></div>
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">La arquitectura que diseñaron para nuestra plataforma educativa nos permitió escalar a 5 países en tiempo récord. Impecable.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">JA</div><div><h4 class="font-bold text-sm text-white">Javier Alarcón</h4><p class="text-blue-400 text-xs">Founder - EduGlobal</p></div></div></div>
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">El sistema de delivery PWA es una joya. Nuestros clientes aman la interfaz y nosotros amamos la facilidad de administración.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">CP</div><div><h4 class="font-bold text-sm text-white">Carlos Pérez</h4><p class="text-blue-400 text-xs">Dueño - Foodie Express</p></div></div></div>
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">Gracias a su estrategia SEO, nuestras ventas orgánicas subieron un 200% en apenas 4 meses. Su conocimiento de Google es brutal.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">MT</div><div><h4 class="font-bold text-sm text-white">Mariana Torres</h4><p class="text-blue-400 text-xs">E-Commerce Manager - LuxGlow</p></div></div></div>
-                    <div class="testimonial-card"><div class="quote-icon">"</div><p class="text-gray-200 italic mb-6 font-light">Blindaron nuestra infraestructura crítica contra ataques que antes nos paralizaban. QUANTRUM es sinónimo de tranquilidad y paz.</p><div class="flex items-center gap-4"><div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-full flex items-center justify-center font-bold text-white shadow-lg">DV</div><div><h4 class="font-bold text-sm text-white">Daniel Vargas</h4><p class="text-blue-400 text-xs">CTO - Inversiones Seguras</p></div></div></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contacto" class="py-24 bg-white/[0.02] backdrop-blur-sm border-t border-white/10 px-6 relative z-10">
-            <div class="container mx-auto max-w-4xl">
-                <div class="bg-[#020617]/70 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-10 md:p-14 shadow-2xl">
-                    <div class="text-center mb-12"><h2 class="text-4xl font-bold mb-4 text-white">¿Listo para <span class="text-gradient">Comenzar?</span></h2><p class="text-gray-300 font-light">Cuéntanos tu visión y la haremos realidad con estándares de élite.</p></div>
-                    <form id="contact-form" class="space-y-6 text-left">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-semibold mb-2 text-gray-200">Nombre</label><input type="text" name="nombre" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
-                            <div><label class="block text-sm font-semibold mb-2 text-gray-200">Email</label><input type="email" name="correo" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
+                <form id="contacto-form-real" class="space-y-6 bg-slate-900/40 p-8 rounded-2xl border border-white/5 backdrop-blur-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre Completo</label>
+                            <input type="text" id="form-nombre" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500 outline-none">
                         </div>
-                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">WhatsApp</label><input type="text" name="whatsapp" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white"></div>
-                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Mensaje</label><textarea name="proyecto" rows="4" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none resize-none text-white" required></textarea></div>
-                        <button type="submit" class="w-full py-5 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all text-lg">Enviar Mensaje</button>
-                        <p id="form-status" class="text-center font-bold hidden mt-4"></p>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-24 px-6 relative z-10 border-t border-white/5">
-            <div class="container mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-8 text-white">Nuestra <span class="text-gradient">Ubicación</span></h2>
-                <div class="max-w-5xl mx-auto shadow-2xl rounded-3xl overflow-hidden border border-blue-500/20">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.471714421591!2d-68.0051214!3d10.1830556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDEwJzU5LjAiTiA2OMKwMDAnMTguNCJX!5e0!3m2!1ses!2sve!4v1652718293021!5m2!1ses!2sve" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="dark-map w-full"></iframe>
-                </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Correo Corporativo</label>
+                            <input type="email" id="form-correo" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">WhatsApp (con código de país)</label>
+                        <input type="text" id="form-whatsapp" placeholder="+58 412..." required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Descripción del Proyecto</label>
+                        <textarea id="form-proyecto" rows="4" required placeholder="Cuéntanos brevemente qué necesitas desarrollar..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/20">Enviar Solicitud de Auditoría</button>
+                </form>
             </div>
         </section>
     </main>
 
     <footer class="bg-black/60 backdrop-blur-xl border-t border-blue-900/30 py-20 px-6 relative z-10">
-        <div class="container mx-auto">
+        <div class="container mx-auto max-w-6xl">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div>
-                    <div class="flex items-center gap-4 mb-6"><img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto"><span class="text-xl font-bold text-white">QUANTRUM</span></div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto">
+                        <span class="text-xl font-bold text-white">QUANTRUM</span>
+                    </div>
                     <p class="text-gray-400 text-sm font-light">Creando experiencias digitales excepcionales desde 2019.</p>
                 </div>
                 <div>
@@ -299,49 +256,71 @@
             lucide.createIcons(); 
             const btnMenu = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            const mobileLinks = document.querySelectorAll('.mobile-link');
-            btnMenu.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
-            mobileLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); }); });
-        });
-
-        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').then(reg => console.log('✓ PWA: Motor Service Worker activo.')).catch(err => console.error('✗ PWA: Error en Service Worker.', err)); }); }
-
-        let deferredPrompt;
-        const pwaInstallFab = document.getElementById('pwa-install-fab');
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; pwaInstallFab.classList.remove('hidden'); pwaInstallFab.classList.add('pwa-visible'); });
-        pwaInstallFab.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; pwaInstallFab.classList.add('hidden'); pwaInstallFab.classList.remove('pwa-visible'); } });
-
-        const chatToggleBtn = document.getElementById('chat-toggle-btn');
-        const chatBox = document.getElementById('chat-box');
-        const chatCloseBtn = document.getElementById('chat-close-btn');
-        const chatFormWidget = document.getElementById('chat-form-widget');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-
-        chatToggleBtn.addEventListener('click', () => { chatBox.classList.toggle('hidden'); if(!chatBox.classList.contains('hidden')) { chatInput.focus(); } });
-        chatCloseBtn.addEventListener('click', () => { chatBox.classList.add('hidden'); });
-
-        chatFormWidget.addEventListener('submit', async (e) => {
-            e.preventDefault(); const msg = chatInput.value.trim(); if (!msg) return;
-            const userDiv = document.createElement('div'); userDiv.className = "bg-blue-600/20 border border-blue-500/30 text-white p-3 rounded-xl max-w-[85%] ml-auto text-right self-end shadow-sm"; userDiv.innerText = msg; chatMessages.appendChild(userDiv); chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
-            const loadingDiv = document.createElement('div'); loadingDiv.className = "bg-slate-900 border border-slate-800 text-gray-400 p-3 rounded-xl max-w-[85%] self-start italic flex items-center gap-1"; loadingDiv.id = "chat-loading"; loadingDiv.innerText = "Procesando..."; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            try {
-                const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
-                const data = await response.json();
-                const loadEl = document.getElementById('chat-loading'); if (loadEl) loadEl.remove();
-                const botDiv = document.createElement('div'); botDiv.className = "bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md leading-relaxed"; botDiv.innerText = data.response; chatMessages.appendChild(botDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-            } catch (err) {
-                const loadEl = document.getElementById('chat-loading'); if (loadEl) loadEl.remove();
-                const errorDiv = document.createElement('div'); errorDiv.className = "bg-red-950/40 border border-red-900/30 text-red-400 p-3 rounded-xl max-w-[85%] self-start"; errorDiv.innerText = "Error de enlace con Chat Quantrum."; chatMessages.appendChild(errorDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+            if(btnMenu && mobileMenu) {
+                btnMenu.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+                document.querySelectorAll('.mobile-link').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); }); });
             }
         });
 
         const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
-        document.getElementById('contact-form').onsubmit = async (e) => {
-            e.preventDefault(); const status = document.getElementById('form-status'); const data = Object.fromEntries(new FormData(e.target));
-            try { const res = await fetch(`${BACKEND_URL}/api/contacto`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); if(res.ok) { status.innerText = "✓ Mensaje enviado. El equipo te contactará."; status.className = "text-center font-bold text-blue-400 block mt-4"; e.target.reset(); } } catch { status.innerText = "✗ Backend offline. Intenta por WhatsApp."; status.className = "text-center font-bold text-red-500 block mt-4"; }
-        };
+
+        // LÓGICA DE APERTURA Y ENVÍO DEL CHATBOT
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        if(chatToggleBtn && chatBox) {
+            chatToggleBtn.addEventListener('click', () => { chatBox.classList.toggle('hidden'); if(!chatBox.classList.contains('hidden')) { chatInput.focus(); } });
+            document.getElementById('chat-close-btn').addEventListener('click', () => { chatBox.classList.add('hidden'); });
+        }
+
+        document.getElementById('chat-form-widget').addEventListener('submit', async (e) => {
+            e.preventDefault(); const msg = chatInput.value.trim(); if (!msg) return;
+            chatMessages.innerHTML += `<div class="bg-blue-600/20 border border-blue-500/30 text-white p-3 rounded-xl max-w-[85%] ml-auto text-right self-end shadow-sm mb-3">${msg}</div>`;
+            chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const loadId = 'load-' + Date.now();
+            chatMessages.innerHTML += `<div id="${loadId}" class="bg-slate-900 border border-slate-800 text-gray-400 p-3 rounded-xl max-w-[85%] self-start italic mb-3 flex items-center gap-2">Procesando...</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+                const data = await response.json();
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md mb-3 leading-relaxed">${data.response}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (err) {
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-red-950/40 border border-red-900/30 text-red-400 p-3 rounded-xl max-w-[85%] self-start mb-3">Error de enlace con Chat Quantrum.</div>`;
+            }
+        });
+
+        // LÓGICA DE ENVÍO DE FORMULARIO DE CONTACTO EN LA API
+        document.getElementById('contacto-form-real').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('form-nombre').value.trim();
+            const correo = document.getElementById('form-correo').value.trim();
+            const whatsapp = document.getElementById('form-whatsapp').value.trim();
+            const proyecto = document.getElementById('form-proyecto').value.trim();
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/contacto`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre, correo, whatsapp, proyecto })
+                });
+                const data = await res.json();
+                if(data.status === 'success') {
+                    alert('✓ ¡Formulario enviado con éxito! Tu consultoría estratégica ha sido agendada.');
+                    document.getElementById('contacto-form-real').reset();
+                } else {
+                    alert('Hubo un problema al procesar los datos. Por favor reintenta o escríbenos por WhatsApp.');
+                }
+            } catch {
+                alert('Error de conexión con el servidor. Por favor, intenta de nuevo.');
+            }
+        });
     </script>
 </body>
 </html>

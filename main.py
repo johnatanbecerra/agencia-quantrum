@@ -9,7 +9,7 @@ import google.generativeai as genai
 
 app = FastAPI()
 
-# --- CONFIGURACIÓN DE CORS ---
+# --- CONFIGURACIÓN DE CORS PARA PERMITIR CONEXIÓN DESDE GITHUB PAGES ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +20,7 @@ app.add_middleware(
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
-# TU CLAVE REAL INYECTADA
+# CLAVE DE GOOGLE GEMINI INYECTADA DESDE ENVIROMENT VARIABLES
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBkdJpMrjmCacqk2ol4D0KSuMrkRnV88yA")
 
 supabase = None
@@ -33,13 +33,11 @@ try:
 except Exception as e:
     print(f"⚠ Error Supabase: {e}")
 
-# --- CONFIGURACIÓN OFICIAL DE GOOGLE GEMINI ---
+# --- CONFIGURACIÓN DE LIBRERÍA OFICIAL DE GOOGLE GEMINI ---
 if GEMINI_API_KEY and len(GEMINI_API_KEY) > 20:
     genai.configure(api_key=GEMINI_API_KEY)
-    # Usamos el modelo base para garantizar compatibilidad total
-    model = genai.GenerativeModel('gemini-pro')
 else:
-    model = None
+    print("⚠ Error: API Key de Gemini no configurada correctamente.")
 
 class ContactoForm(BaseModel):
     nombre: str; correo: str; whatsapp: str; proyecto: str
@@ -58,20 +56,30 @@ async def recibir_contacto(form: ContactoForm):
 
 @app.post("/api/chat")
 async def chat_quantrum(req: ChatRequest):
-    if not model:
-        return {"response": "API Key de Gemini no detectada."}
+    if not GEMINI_API_KEY or len(GEMINI_API_KEY) < 20:
+        return {"response": "API Key de Gemini no detectada en las variables de entorno de Render."}
     
-    system_instruction = "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés (máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. Responde en español, profesional y tecnológico."
-    
-    # Inyectamos el contexto directamente en el prompt
-    prompt = f"Instrucciones de comportamiento: {system_instruction}\n\nMensaje del cliente: {req.message}\nRespuesta de Chat Quantrum Pro:"
+    system_instruction = (
+        "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la "
+        "agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés "
+        "(máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, "
+        "UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. "
+        "Responde siempre en español, con un tono profesional, elegante y tecnológico."
+    )
     
     try:
-        # Generación nativa con la librería de Google
-        response = model.generate_content(prompt)
+        # Inicialización del modelo nativo con la directiva del sistema integrada
+        model = genai.GenerativeModel(
+            model_name='gemini-1.5-flash',
+            system_instruction=system_instruction
+        )
+        
+        # Generación nativa a través del SDK oficial de Google
+        response = model.generate_content(req.message)
         return {"response": response.text.strip()}
+        
     except Exception as e:
-        return {"response": f"Error interno de IA: {str(e)}"}
+        return {"response": f"Error interno en los servidores de IA: {str(e)}"}
 
 @app.get("/")
 async def read_index(): return FileResponse('index.html')
