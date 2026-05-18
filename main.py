@@ -12,15 +12,14 @@ from supabase import create_client, Client
 
 app = FastAPI()
 
-# --- CONFIGURACIÓN DE CORS PARA PERMITIR CONEXIÓN DESDE GITHUB PAGES ---
+# --- CONFIGURACIÓN DE CORS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite que cualquier dominio se conecte a tu API
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permite todos los encabezados
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-# -----------------------------------------------------------------------
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
@@ -57,8 +56,8 @@ async def chat_quantrum(req: ChatRequest):
     if not GEMINI_API_KEY or len(GEMINI_API_KEY) < 20:
         return {"response": "Requiero una API Key real."}
     
-    # URL CORREGIDA: Apuntando al modelo exacto para evitar el Error 404
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+    # URL CORREGIDA: Agregamos "-latest" para compatibilidad total con Google
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}"
     
     system_instruction = "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés (máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. Responde en español, profesional y tecnológico."
     
@@ -80,7 +79,6 @@ async def chat_quantrum(req: ChatRequest):
                 time.sleep((2 ** attempt) + 1)
                 continue
             
-            # CAPTURA EL ERROR REAL DE GOOGLE
             error_msg = e.read().decode("utf-8")
             try:
                 error_json = json.loads(error_msg)
