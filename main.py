@@ -20,7 +20,7 @@ app.add_middleware(
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
-# CLAVE DE GOOGLE GEMINI INYECTADA DESDE ENVIROMENT VARIABLES
+# CLAVE DE GOOGLE GEMINI INYECTADA
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBkdJpMrjmCacqk2ol4D0KSuMrkRnV88yA")
 
 supabase = None
@@ -33,7 +33,7 @@ try:
 except Exception as e:
     print(f"⚠ Error Supabase: {e}")
 
-# --- CONFIGURACIÓN DE LIBRERÍA OFICIAL DE GOOGLE GEMINI ---
+# --- CONFIGURACIÓN GLOBAL DEL SDK DE GEMINI ---
 if GEMINI_API_KEY and len(GEMINI_API_KEY) > 20:
     genai.configure(api_key=GEMINI_API_KEY)
 else:
@@ -57,7 +57,7 @@ async def recibir_contacto(form: ContactoForm):
 @app.post("/api/chat")
 async def chat_quantrum(req: ChatRequest):
     if not GEMINI_API_KEY or len(GEMINI_API_KEY) < 20:
-        return {"response": "API Key de Gemini no detectada en las variables de entorno de Render."}
+        return {"response": "API Key de Gemini no detectada."}
     
     system_instruction = (
         "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la "
@@ -68,18 +68,18 @@ async def chat_quantrum(req: ChatRequest):
     )
     
     try:
-        # Inicialización del modelo nativo con la directiva del sistema integrada
+        # Inicialización forzada y única con gemini-1.5-flash y sus instrucciones de sistema
         model = genai.GenerativeModel(
             model_name='gemini-1.5-flash',
             system_instruction=system_instruction
         )
         
-        # Generación nativa a través del SDK oficial de Google
+        # Generación de contenido limpia mediante el SDK oficial
         response = model.generate_content(req.message)
         return {"response": response.text.strip()}
         
     except Exception as e:
-        return {"response": f"Error interno en los servidores de IA: {str(e)}"}
+        return {"response": f"Error de configuración en la IA: {str(e)}"}
 
 @app.get("/")
 async def read_index(): return FileResponse('index.html')
