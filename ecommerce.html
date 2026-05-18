@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANTRUM | Plataformas E-Commerce Elite</title>
+    <title>QUANTRUM | E-Commerce Premium</title>
     
     <link rel="icon" type="image/png" href="quantrum_logo.png">
     
@@ -39,10 +39,42 @@
             background-image: linear-gradient(to bottom, rgba(2,6,23,0.8), rgba(0,0,0,1)), url('https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1920');
             background-size: cover; background-position: center; background-attachment: fixed;
         }
+
+        /* CHATBOT FAB OPTIMIZADO */
+        @keyframes floatBotFree { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.06); } 100% { transform: translateY(0) scale(1); } }
+        #chat-toggle-btn { position: fixed !important; bottom: 120px !important; right: 28px !important; z-index: 9999; background: transparent !important; border: none !important; box-shadow: none !important; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; cursor: pointer; animation: floatBotFree 3.5s infinite ease-in-out; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.7)); transition: transform 0.2s ease, filter 0.2s ease; }
+        #chat-toggle-btn:hover { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)); }
+        #chat-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
+        
+        #chat-messages::-webkit-scrollbar { width: 4px; }
+        #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen">
     <div class="bg-grid"></div>
+
+    <button id="chat-toggle-btn">
+        <img src="bot_logo.png" alt="Bot Quantrum Pro">
+    </button>
+
+    <div id="chat-box" class="hidden fixed bottom-[210px] right-[30px] z-[9999] w-[350px] h-[460px] bg-slate-950/95 border border-blue-500/30 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-950 to-slate-900 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-xs font-bold tracking-wider text-gradient">CHAT QUANTRUM</span>
+            </div>
+            <button id="chat-close-btn" class="text-gray-400 hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs flex flex-col">
+            <div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start leading-relaxed shadow-md">
+                ¡Hola! Soy <strong>Chat Quantrum Pro</strong>. ¿Buscas crear una tienda online que venda 24/7 y acepte pagos a nivel mundial?
+            </div>
+        </div>
+        <form id="chat-form-widget" class="p-3 border-t border-blue-500/20 flex gap-2 bg-black/40">
+            <input type="text" id="chat-input" placeholder="Pregúntame sobre tiendas online..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 outline-none" autocomplete="off">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-2 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+    </div>
 
     <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo">
@@ -67,9 +99,8 @@
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 border border-blue-400/30 backdrop-blur-md rounded-2xl mb-6 text-blue-400">
                     <i data-lucide="shopping-cart" class="w-8 h-8"></i>
                 </div>
-                <div class="mb-4"><span class="px-3 py-1 bg-blue-600/30 border border-blue-400/50 rounded-full text-blue-300 text-xs font-bold uppercase tracking-wider">Producto Elite</span></div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">Plataformas <span class="text-gradient">E-Commerce</span></h1>
-                <p class="text-xl text-gray-300 mb-10 font-light">Transformamos tu inventario en una máquina de ventas 24/7. Tiendas virtuales escalables, seguras y optimizadas para persuadir y vender.</p>
+                <p class="text-xl text-gray-300 mb-10 font-light">Tiendas virtuales de alto rendimiento, seguras y optimizadas para facturar las 24 horas del día sin fronteras geográficas.</p>
                 <a href="#contacto-servicio" class="px-10 py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-blue-500/40 hover:bg-blue-600 transition-all text-lg inline-block">Crear mi Tienda Online</a>
             </div>
         </section>
@@ -77,19 +108,19 @@
         <section class="py-24 bg-white/[0.02] backdrop-blur-sm px-6">
             <div class="container mx-auto max-w-6xl">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/20 border border-blue-500/20">
-                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800" alt="Plataforma de Ventas E-Commerce" class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity">
-                    </div>
                     <div>
-                        <h2 class="text-3xl font-bold mb-6">Vende sin fronteras y <span class="text-gradient">sin fricciones</span></h2>
-                        <p class="text-gray-400 mb-6 font-light leading-relaxed">El éxito de una tienda online no está solo en mostrar productos, sino en cómo guías al cliente hacia el botón de "Pagar". Diseñamos e-commerce aplicando estrategias de neuromarketing para reducir el abandono de carritos y maximizar el ticket promedio de compra.</p>
+                        <h2 class="text-3xl font-bold mb-6">Vende sin límites de horario ni <span class="text-gradient">fronteras</span></h2>
+                        <p class="text-gray-400 mb-6 font-light leading-relaxed">Transformamos tu catálogo de productos en una máquina de ventas automatizada. Desarrollamos tiendas a medida que no solo muestran tu stock, sino que guían al cliente directamente hacia la compra mediante una experiencia de usuario impecable.</p>
                         
                         <ul class="space-y-4 font-light">
-                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="credit-card" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Pasarelas de pago globales y locales (Tarjetas, Zelle, Pago Móvil).</li>
-                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="package" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Panel de control avanzado para gestión fácil de inventario y envíos.</li>
-                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="shield-check" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Certificados de seguridad SSL y protección contra fraudes.</li>
-                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="trending-up" class="text-blue-400 w-5 h-5 flex-shrink-0"></i> Estrategias automatizadas de recuperación de carritos abandonados.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="credit-card" class="text-blue-400 w-5 h-5"></i> Integración con pasarelas de pago globales y locales.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="package" class="text-blue-400 w-5 h-5"></i> Panel de administración intuitivo para gestionar tu inventario.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="shopping-bag" class="text-blue-400 w-5 h-5"></i> Experiencia de carrito de compras y checkout sin fricciones.</li>
+                            <li class="flex items-center gap-3 text-gray-300"><i data-lucide="shield-check" class="text-blue-400 w-5 h-5"></i> Máxima seguridad y encriptación de datos bancarios (SSL).</li>
                         </ul>
+                    </div>
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/20 border border-blue-500/20">
+                        <img src="https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800" alt="Plataforma E-Commerce" class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity">
                     </div>
                 </div>
             </div>
@@ -99,8 +130,8 @@
             <div class="container mx-auto max-w-4xl">
                 <div class="bg-[#020617]/70 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-10 shadow-2xl">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold mb-4 text-white">Abre tu <span class="text-gradient">Sucursal Digital</span></h2>
-                        <p class="text-gray-300 font-light">Indícanos qué tipo de productos vendes y prepararemos una propuesta comercial para ti.</p>
+                        <h2 class="text-4xl font-bold mb-4 text-white">Construye tu <span class="text-gradient">Tienda Online</span></h2>
+                        <p class="text-gray-300 font-light">Cuéntanos sobre tus productos y el alcance comercial que estás buscando.</p>
                     </div>
                     
                     <form id="contact-form" class="space-y-6 text-left">
@@ -110,11 +141,11 @@
                         </div>
                         <div><label class="block text-sm font-semibold mb-2 text-gray-200">WhatsApp</label><input type="text" name="whatsapp" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white"></div>
                         
-                        <input type="hidden" name="servicio_origen" value="E-Commerce Elite">
+                        <input type="hidden" name="servicio_origen" value="E-Commerce">
                         
-                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Detalles de tu Tienda (¿Qué vendes?)</label><textarea name="proyecto" rows="4" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none resize-none text-white" placeholder="Ej: Vendo materiales de construcción y necesito organizar mi catálogo por categorías..." required></textarea></div>
+                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Detalles de tu Tienda</label><textarea name="proyecto" rows="4" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none resize-none text-white" placeholder="Ej: Quiero vender mis productos de ferretería a nivel nacional, necesito pagos con tarjeta..." required></textarea></div>
                         
-                        <button type="submit" class="w-full py-5 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all text-lg">Solicitar Propuesta E-Commerce</button>
+                        <button type="submit" class="w-full py-5 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all text-lg">Solicitar Presupuesto E-Commerce</button>
                         <p id="form-status" class="text-center font-bold hidden mt-4"></p>
                     </form>
                 </div>
@@ -122,17 +153,79 @@
         </section>
     </main>
 
-    <footer class="bg-black/60 backdrop-blur-xl border-t border-blue-900/30 py-16 px-6 relative z-10">
-        <div class="container mx-auto text-center">
-            <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto mx-auto mb-4">
-            <p class="text-gray-400 text-sm mb-4 font-light">Agencia Digital QUANTRUM. Valencia, Venezuela.</p>
-            <div class="pt-4 border-t border-slate-800 text-gray-500 text-xs font-light">© 2026 Todos los derechos reservados.</div>
+    <footer class="bg-black/60 backdrop-blur-xl border-t border-blue-900/30 py-20 px-6 relative z-10">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto">
+                        <span class="text-xl font-bold text-white">QUANTRUM</span>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light">Creando experiencias digitales excepcionales desde 2019.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Servicios</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="ecommerce.html" class="text-blue-400">E-Commerce</a></li>
+                        <li><a href="aplicaciones-pwa.html" class="hover:text-blue-400 transition-colors">Desarrollo PWA</a></li>
+                        <li><a href="diseno-ui-ux.html" class="hover:text-blue-400 transition-colors">Diseño UI/UX</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Compañía</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="nosotros.html" class="hover:text-blue-400 transition-colors">Nosotros</a></li>
+                        <li><a href="index.html#portafolio" class="hover:text-blue-400 transition-colors">Testimonios</a></li>
+                        <li><a href="index.html#contacto" class="hover:text-blue-400 transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-sm text-white">Sede Valencia</h3>
+                    <div class="text-gray-400 text-xs space-y-3 font-light">
+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-blue-400"></i> info@quantrum.com</p>
+                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-blue-400"></i> (+58) 412-9550884 / 426-5336973</p>
+                        <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i> Av. Bolívar Norte</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800 text-center text-gray-500 text-sm font-light">© 2026 QUANTRUM. Todos los derechos reservados.</div>
         </div>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => { lucide.createIcons(); });
         
+        // LÓGICA DEL CHAT
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatToggleBtn.addEventListener('click', () => { chatBox.classList.toggle('hidden'); if(!chatBox.classList.contains('hidden')) { chatInput.focus(); } });
+        document.getElementById('chat-close-btn').addEventListener('click', () => { chatBox.classList.add('hidden'); });
+
+        document.getElementById('chat-form-widget').addEventListener('submit', async (e) => {
+            e.preventDefault(); const msg = chatInput.value.trim(); if (!msg) return;
+            chatMessages.innerHTML += `<div class="bg-blue-600/20 border border-blue-500/30 text-white p-3 rounded-xl max-w-[85%] ml-auto text-right self-end shadow-sm mb-3">${msg}</div>`;
+            chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const loadId = 'load-' + Date.now();
+            chatMessages.innerHTML += `<div id="${loadId}" class="bg-slate-900 border border-slate-800 text-gray-400 p-3 rounded-xl max-w-[85%] self-start italic mb-3 flex items-center gap-2">Procesando...</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+                const data = await response.json();
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md mb-3 leading-relaxed">${data.response}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (err) {
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-red-950/40 border border-red-900/30 text-red-400 p-3 rounded-xl max-w-[85%] self-start mb-3">Error de conexión. Reintenta.</div>`;
+            }
+        });
+
+        // LÓGICA DEL FORMULARIO DE CONTACTO
         const BACKEND_URL = 'http://127.0.0.1:8000';
         document.getElementById('contact-form').onsubmit = async (e) => {
             e.preventDefault();
@@ -147,7 +240,7 @@
                     body: JSON.stringify(data)
                 });
                 if(res.ok) {
-                    status.innerText = "✓ Solicitud de tienda online recibida.";
+                    status.innerText = "✓ Solicitud de tienda enviada.";
                     status.className = "text-center font-bold text-blue-400 block mt-4";
                     e.target.reset();
                 }
