@@ -68,9 +68,9 @@ async def chat_quantrum(req: ChatRequest):
     )
     
     try:
-        # Inicialización forzada y única con gemini-1.5-flash y sus instrucciones de sistema
+        # Forzamos el uso de gemini-2.0-flash para total compatibilidad con el ecosistema actual
         model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash',
+            model_name='gemini-2.0-flash',
             system_instruction=system_instruction
         )
         
