@@ -337,7 +337,7 @@
             }
         });
 
-        const BACKEND_URL = 'http://127.0.0.1:8000';
+        const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
         document.getElementById('contact-form').onsubmit = async (e) => {
             e.preventDefault(); const status = document.getElementById('form-status'); const data = Object.fromEntries(new FormData(e.target));
             try { const res = await fetch(`${BACKEND_URL}/api/contacto`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); if(res.ok) { status.innerText = "✓ Mensaje enviado. El equipo te contactará."; status.className = "text-center font-bold text-blue-400 block mt-4"; e.target.reset(); } } catch { status.innerText = "✗ Backend offline. Intenta por WhatsApp."; status.className = "text-center font-bold text-red-500 block mt-4"; }

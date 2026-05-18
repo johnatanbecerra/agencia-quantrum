@@ -53,7 +53,10 @@
     </button>
     <div id="chat-box" class="hidden fixed bottom-[210px] right-[30px] z-[9999] w-[350px] h-[460px] bg-slate-950/95 border border-blue-500/30 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden">
         <div class="bg-gradient-to-r from-blue-950 to-slate-900 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
-            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div><span class="text-xs font-bold tracking-wider text-gradient">CHAT QUANTRUM</span></div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-xs font-bold tracking-wider text-gradient">CHAT QUANTRUM</span>
+            </div>
             <button id="chat-close-btn" class="text-gray-400 hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs flex flex-col">
@@ -146,7 +149,7 @@
                         <div class="md:w-3/5 p-8 flex flex-col justify-center">
                             <span class="member-role">Customer Success & Ventas</span>
                             <h3 class="text-3xl font-bold text-white mb-4">Marisela Rodríguez</h3>
-                            <p class="text-gray-400 font-light leading-relaxed">El puente directo entre las necesidades de nuestros clientes y las soluciones de nuestro equipo técnico. Marisela diseña experiencias de servicio premium, asegurando un acompañamiento personalizado, transparente y de absoluta confianza desde el primer contacto hasta el despliegue final.</p>
+                            <p class="text-gray-400 font-light leading-relaxed">El puente directo entre las necesidades de nuestros clientes and las soluciones de nuestro equipo técnico. Marisela diseña experiencias de servicio premium, asegurando un acompañamiento personalizado, transparente y de absoluta confianza desde el primer contacto hasta el despliegue final.</p>
                         </div>
                     </div>
 
@@ -206,7 +209,7 @@
                     <h3 class="font-bold mb-6 text-sm text-white">Sede Valencia</h3>
                     <div class="text-gray-400 text-xs space-y-3 font-light">
                         <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-blue-400"></i> info@quantrum.com</p>
-                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-blue-400"></i> (+58) 412-9550884</p>
+                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-blue-400"></i> (+58) 412-9550884 / 426-5336973</p>
                         <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i> Av. Bolívar Norte</p>
                     </div>
                 </div>
@@ -224,7 +227,9 @@
             document.querySelectorAll('.mobile-link').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); }); });
         });
 
-        // LÓGICA DEL CHAT EN LA PÁGINA NOSOTROS
+        // LÓGICA DEL CHAT ENLAZADA AL BACKEND DE RENDER
+        const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
+
         const chatToggleBtn = document.getElementById('chat-toggle-btn');
         const chatBox = document.getElementById('chat-box');
         const chatInput = document.getElementById('chat-input');
@@ -243,7 +248,7 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             try {
-                const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+                const response = await fetch(`${BACKEND_URL}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
                 const data = await response.json();
                 document.getElementById(loadId)?.remove();
                 chatMessages.innerHTML += `<div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md mb-3 leading-relaxed">${data.response}</div>`;
