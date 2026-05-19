@@ -21,7 +21,7 @@ app.add_middleware(
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
 
-# AQUÍ LE DECIMOS QUE BUSQUE LA CLAVE OCULTA EN EL SERVIDOR
+# LA CLAVE DE GROQ OCULTA EN EL SERVIDOR
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 supabase = None
@@ -69,13 +69,13 @@ async def chat_quantrum(req: ChatRequest):
     )
     
     try:
-        # Petición oficial a los servidores de Groq utilizando Llama 3
+        # Petición a los servidores de Groq utilizando la versión más reciente y activa de Llama 3
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": req.message}
             ],
-            model="llama3-8b-8192",  # Libre de bloqueos para Venezuela
+            model="llama-3.1-8b-instant",  # El modelo de Groq actualizado
             temperature=0.4,
             max_tokens=150,
         )
