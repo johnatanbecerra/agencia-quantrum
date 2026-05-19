@@ -1,94 +1,257 @@
-import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-from supabase import create_client, Client
-from groq import Groq
-
-app = FastAPI()
-
-# --- CONFIGURACIÓN DE CORS PARA PERMITIR CONEXIÓN DESDE GITHUB PAGES ---
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
-
-# LA CLAVE DE GROQ OCULTA EN EL SERVIDOR
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-
-supabase = None
-try:
-    if SUPABASE_URL and not SUPABASE_URL.startswith("https://placeholder"):
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        print("✓ Conexión a Supabase configurada.")
-    else:
-        print("⚠ Supabase en modo simulación.")
-except Exception as e:
-    print(f"⚠ Error Supabase: {e}")
-
-# --- INICIALIZACIÓN OFICIAL DEL CLIENTE DE GROQ ---
-client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
-
-class ContactoForm(BaseModel):
-    nombre: str; correo: str; whatsapp: str; proyecto: str
-
-class ChatRequest(BaseModel):
-    message: str
-
-@app.post("/api/contacto")
-async def recibir_contacto(form: ContactoForm):
-    if supabase:
-        try:
-            supabase.table("contactos").insert({"nombre": form.nombre, "correo": form.correo, "whatsapp": form.whatsapp, "proyecto": form.proyecto}).execute()
-            return {"status": "success"}
-        except Exception: return {"status": "error"}
-    return {"status": "success"}
-
-@app.post("/api/chat")
-async def chat_quantrum(req: ChatRequest):
-    if not GROQ_API_KEY:
-        return {"response": "API Key de Groq no configurada en las variables de entorno de Render."}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros | QUANTRUM - Ingeniería Digital de Élite</title>
+    
+    <meta name="description" content="Conoce al equipo de especialistas detrás de Quantrum. Pasión por la tecnología, obsesión por los resultados.">
+    <link rel="icon" type="image/png" href="quantrum_logo.png">
+    <meta name="theme-color" content="#020617">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#3b82f6', border: 'rgba(59, 130, 246, 0.3)' } } } }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #020617 0%, #000000 50%, #082f49 100%); background-attachment: fixed; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
+        .bg-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); z-index: -2; pointer-events: none; }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #93c5fd, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-    if not client:
-        return {"response": "Error al inicializar el cliente de Groq."}
-    
-    # INSTRUCCIONES ACTUALIZADAS CON LOS DOS NOMBRES Y TONO CERCANO
-    system_instruction = (
-        "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la "
-        "agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés "
-        "(máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, "
-        "UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. "
-        "Nuestros números de contacto de WhatsApp son +58 412-9550884 y +58 426-5336973. Si preguntan con quién hablar, "
-        "indica que se comunicarán con Johnatan Becerra o Jesús Ramírez, especialistas de nuestro equipo. "
-        "Responde siempre en español, con un tono profesional, persuasivo y tecnológico."
-    )
-    
-    try:
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": req.message}
-            ],
-            model="llama-3.1-8b-instant",
-            temperature=0.4,
-            max_tokens=150,
-        )
-        return {"response": chat_completion.choices[0].message.content.strip()}
-    except Exception as e:
-        return {"response": f"Error de enlace en la IA: {str(e)}"}
+        /* BOTÓN DE DESCARGAR APP FLOTANTE REDONDEADO (IZQUIERDA) */
+        #pwa-install-btn {
+            position: fixed !important; bottom: 30px !important; left: 30px !important; z-index: 9999;
+            width: 70px; height: 70px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.3), inset 0 5px 10px rgba(255,255,255,0.4);
+            border: 1px solid #60a5fa; transition: all 0.3s ease; color: white; cursor: pointer;
+        }
+        #pwa-install-btn:hover { transform: scale(1.1); box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5); }
+        .pwa-text { display: none; }
 
-@app.get("/")
-async def read_index(): return FileResponse('index.html')
-@app.get("/manifest.json")
-async def read_manifest(): return FileResponse('manifest.json')
-@app.get("/sw.js")
-async def read_sw(): return FileResponse('sw.js')
-app.mount("/", StaticFiles(directory="."), name="static") 
+        @media (min-width: 768px) {
+            #pwa-install-btn { width: auto; height: auto; border-radius: 12px; padding: 12px 24px; position: fixed !important; bottom: 30px !important; left: 30px !important; }
+            .pwa-text { display: inline-block; margin-left: 8px; font-weight: bold; font-size: 0.9rem; }
+        }
+
+        /* CHATBOT Y WHATSAPP FLOTANTES (DERECHA) */
+        @keyframes float3d { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.05); } 100% { transform: translateY(0) scale(1); } }
+        #whatsapp-fixed { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999; background: radial-gradient(circle at 30% 30%, #5af191, #25d366 50%, #0c7569); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); animation: float3d 3s infinite ease-in-out; border: 1px solid #149c47; }
+        .wa-logo { width: 40px; height: 40px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
+        
+        @keyframes floatBotFree { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.06); } 100% { transform: translateY(0) scale(1); } }
+        #chat-toggle-btn { position: fixed !important; bottom: 120px !important; right: 28px !important; z-index: 9999; background: transparent !important; border: none !important; box-shadow: none !important; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; cursor: pointer; animation: floatBotFree 3.5s infinite ease-in-out; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.7)); transition: transform 0.2s ease, filter 0.2s ease; }
+        #chat-toggle-btn:hover { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)); }
+        #chat-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
+        
+        #chat-messages::-webkit-scrollbar { width: 4px; } #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+        
+        .team-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 1.5rem; transition: all 0.3s ease; backdrop-filter: blur(8px); overflow: hidden; }
+        .team-card:hover { border-color: #3b82f6; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1); }
+        .team-photo { width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid rgba(59, 130, 246, 0.15); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="bg-grid"></div>
+
+    <button id="pwa-install-btn">
+        <i data-lucide="download" class="w-6 h-6"></i>
+        <span class="pwa-text">Obtener App Quantrum</span>
+    </button>
+
+    <button id="chat-toggle-btn">
+        <img src="bot_logo.png" alt="Bot Quantrum Pro">
+    </button>
+    
+    <div id="chat-box" class="hidden fixed bottom-[210px] right-[30px] z-[9999] w-[350px] h-[460px] bg-slate-950/95 border border-blue-500/30 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-950 to-slate-900 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-xs font-bold tracking-wider text-gradient">CHAT QUANTRUM</span>
+            </div>
+            <button id="chat-close-btn" class="text-gray-400 hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs flex flex-col">
+            <div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start leading-relaxed shadow-md">¡Hola! Soy <strong>Chat Quantrum Pro</strong>. ¿En qué podemos ayudarte hoy?</div>
+        </div>
+        <form id="chat-form-widget" class="p-3 border-t border-blue-500/20 flex gap-2 bg-black/40">
+            <input type="text" id="chat-input" placeholder="Pregúntame sobre PWAs, SEO o Webs..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 outline-none" autocomplete="off">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-2 w-8 h-8 flex items-center justify-center cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+    </div>
+    
+    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo"></a>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-lg border-b border-white/10 shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-4">
+                <img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto">
+                <span class="text-2xl font-bold text-gradient">QUANTRUM</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 font-semibold text-gray-200">
+                <a href="index.html" class="hover:text-blue-400 transition-colors">Inicio</a>
+                <a href="index.html#servicios" class="hover:text-blue-400 transition-colors">Servicios</a>
+                <a href="nosotros.html" class="text-blue-400">Nosotros</a>
+                <a href="index.html#contacto" class="hover:text-blue-400 transition-colors">Contacto</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-blue-400 flex items-center">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-40 pb-24 px-6">
+        <div class="container mx-auto max-w-6xl">
+            
+            <div class="text-center mb-20 relative">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] z-[-1]"></div>
+                <div class="inline-block px-4 py-1.5 bg-blue-500/10 border border-blue-400/20 backdrop-blur-md rounded-full mb-6 text-blue-300 text-xs font-semibold tracking-wide">
+                    🚀 ADN Tecnológico
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-none">Pasión por la <span class="text-gradient">Ingeniería Digital</span></h1>
+                <p class="text-lg text-gray-400 font-light leading-relaxed max-w-3xl mx-auto">No somos una agencia más. Somos un laboratorio de élite donde fusionamos código robusto, diseño de vanguardia e inteligencia artificial para crear ecosistemas digitales que dominan mercados.</p>
+            </div>
+
+            <div class="mb-24">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">El <span class="text-gradient">Equipo</span></h2>
+                    <p class="text-gray-400 max-w-xl mx-auto font-light">Mentes brillantes obsesionadas con la excelencia técnica y la experiencia de usuario.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    
+                    <div class="team-card">
+                        <img src="marisela_profile.jpg" alt="Marisela - Coordinadora de Proyectos Quantrum" class="team-photo">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Marisela</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Coordinadora de Proyectos & Atención al Cliente</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">El puente perfecto entre tus objetivos y nuestro equipo técnico. Marisela asegura que cada proyecto fluya con precisión, cumpliendo tiempos y superando expectativas con un trato humano excepcional.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="team_dev_placeholder.jpg" alt="Especialista en Desarrollo Web Quantrum" class="team-photo">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Carlos R.</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Líder de Desarrollo Full-Stack & PWAs</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Arquitecto de código obsesionado con el rendimiento. Transforma diseños complejos en aplicaciones web progresivas rápidas, escalables y seguras que emulan la experiencia nativa.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="team_design_placeholder.jpg" alt="Especialista en Diseño UI/UX Quantrum" class="team-photo">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Elena M.</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Especialista Senior en Diseño UI/UX</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Fusiona estética y psicología para crear interfaces intuitivas que cautivan y convierten. Elena asegura que cada interacción sea fluida y memorable, poniendo siempre al usuario en el centro.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="py-16 px-8 rounded-3xl bg-slate-950/40 border border-white/5 backdrop-blur-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+                    <div class="p-6">
+                        <i data-lucide="zap" class="w-10 h-10 text-blue-500 mx-auto mb-5"></i>
+                        <h4 class="text-lg font-semibold text-white mb-2">Velocidad y Agilidad</h4>
+                        <p class="text-gray-400 text-sm font-light">Desplegamos soluciones robustas en tiempos récord sin comprometer la calidad.</p>
+                    </div>
+                    <div class="p-6">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-blue-500 mx-auto mb-5"></i>
+                        <h4 class="text-lg font-semibold text-white mb-2">Seguridad y Confianza</h4>
+                        <p class="text-gray-400 text-sm font-light">Protegemos tu activo digital más valioso con auditorías de seguridad y código impecable.</p>
+                    </div>
+                    <div class="p-6">
+                        <i data-lucide="trending-up" class="w-10 h-10 text-blue-500 mx-auto mb-5"></i>
+                        <h4 class="text-lg font-semibold text-white mb-2">Innovación Constante</h4>
+                        <p class="text-gray-400 text-sm font-light">Integramos las últimas tendencias como PWA e IA para mantenerte a la vanguardia.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-black/60 backdrop-blur-xl border-t border-blue-900/30 py-20 px-6 relative z-10">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto">
+                        <span class="text-xl font-bold text-white">QUANTRUM</span>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light">Creando experiencias digitales excepcionales desde 2019.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Servicios</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="ecommerce.html" class="hover:text-blue-400">E-Commerce</a></li>
+                        <li><a href="aplicaciones-pwa.html" class="hover:text-blue-400">Desarrollo PWA</a></li>
+                        <li><a href="diseno-ui-ux.html" class="hover:text-blue-400">Diseño UI/UX</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Compañía</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="nosotros.html" class="text-blue-400">Nosotros</a></li>
+                        <li><a href="index.html#contacto" class="hover:text-blue-400">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-sm text-white">Contacto</h3>
+                    <div class="text-gray-400 text-xs space-y-3 font-light">
+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-blue-400"></i> info@quantrum.com</p>
+                        <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i> Av. Bolívar Norte, Valencia.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800 text-center text-gray-500 text-sm font-light">© 2026 QUANTRUM. Todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => { lucide.createIcons(); });
+        
+        // URL DEL BACKEND EN RENDER (ASEGÚRATE QUE SEA LA CORRECTA)
+        const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
+
+        // LÓGICA DEL CHATBOT
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        if(chatToggleBtn && chatBox) {
+            chatToggleBtn.addEventListener('click', () => { chatBox.classList.toggle('hidden'); if(!chatBox.classList.contains('hidden')) { chatInput.focus(); } });
+            document.getElementById('chat-close-btn').addEventListener('click', () => { chatBox.classList.add('hidden'); });
+        }
+
+        document.getElementById('chat-form-widget').addEventListener('submit', async (e) => {
+            e.preventDefault(); const msg = chatInput.value.trim(); if (!msg) return;
+            chatMessages.innerHTML += `<div class="bg-blue-600/20 border border-blue-500/30 text-white p-3 rounded-xl max-w-[85%] ml-auto text-right self-end shadow-sm mb-3">${msg}</div>`;
+            chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const loadId = 'load-' + Date.now();
+            chatMessages.innerHTML += `<div id="${loadId}" class="bg-slate-900 border border-slate-800 text-gray-400 p-3 rounded-xl max-w-[85%] self-start italic mb-3 flex items-center gap-2">Procesando...</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+                const data = await response.json();
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md mb-3 leading-relaxed">${data.response}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (err) {
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-red-950/40 border border-red-900/30 text-red-400 p-3 rounded-xl max-w-[85%] self-start mb-3">Error de enlace con Chat Quantrum.</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
