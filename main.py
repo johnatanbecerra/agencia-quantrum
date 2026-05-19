@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from supabase import create_client, Client
-import google.generativeai as genai
+from groq import Groq
 
 app = FastAPI()
 
@@ -20,8 +20,9 @@ app.add_middleware(
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
-# CLAVE DE GOOGLE GEMINI INYECTADA
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBkdJpMrjmCacqk2ol4D0KSuMrkRnV88yA")
+
+# AQUÍ LE DECIMOS QUE BUSQUE LA CLAVE OCULTA EN EL SERVIDOR
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 supabase = None
 try:
@@ -33,11 +34,8 @@ try:
 except Exception as e:
     print(f"⚠ Error Supabase: {e}")
 
-# --- CONFIGURACIÓN GLOBAL DEL SDK DE GEMINI ---
-if GEMINI_API_KEY and len(GEMINI_API_KEY) > 20:
-    genai.configure(api_key=GEMINI_API_KEY)
-else:
-    print("⚠ Error: API Key de Gemini no configurada correctamente.")
+# --- INICIALIZACIÓN OFICIAL DEL CLIENTE DE GROQ ---
+client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 class ContactoForm(BaseModel):
     nombre: str; correo: str; whatsapp: str; proyecto: str
@@ -56,30 +54,34 @@ async def recibir_contacto(form: ContactoForm):
 
 @app.post("/api/chat")
 async def chat_quantrum(req: ChatRequest):
-    if not GEMINI_API_KEY or len(GEMINI_API_KEY) < 20:
-        return {"response": "API Key de Gemini no detectada."}
+    if not GROQ_API_KEY:
+        return {"response": "API Key de Groq no configurada en las variables de entorno de Render."}
+        
+    if not client:
+        return {"response": "Error al inicializar el cliente de Groq."}
     
     system_instruction = (
         "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la "
         "agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés "
         "(máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, "
         "UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. "
-        "Responde siempre en español, con un tono profesional, elegante y tecnológico."
+        "Responde siempre en español, con un tono profesional, persuasivo y tecnológico."
     )
     
     try:
-        # Forzamos el uso de gemini-2.0-flash para total compatibilidad con el ecosistema actual
-        model = genai.GenerativeModel(
-            model_name='gemini-2.0-flash',
-            system_instruction=system_instruction
+        # Petición oficial a los servidores de Groq utilizando Llama 3
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": system_instruction},
+                {"role": "user", "content": req.message}
+            ],
+            model="llama3-8b-8192",  # Libre de bloqueos para Venezuela
+            temperature=0.4,
+            max_tokens=150,
         )
-        
-        # Generación de contenido limpia mediante el SDK oficial
-        response = model.generate_content(req.message)
-        return {"response": response.text.strip()}
-        
+        return {"response": chat_completion.choices[0].message.content.strip()}
     except Exception as e:
-        return {"response": f"Error de configuración en la IA: {str(e)}"}
+        return {"response": f"Error de enlace en la IA: {str(e)}"}
 
 @app.get("/")
 async def read_index(): return FileResponse('index.html')
