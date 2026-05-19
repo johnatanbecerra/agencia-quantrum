@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosotros | QUANTRUM - Ingeniería Digital de Élite</title>
+    <title>Nosotros | QUANTRUM - Agencia Digital</title>
     
     <meta name="description" content="Conoce al equipo de especialistas detrás de Quantrum. Pasión por la tecnología, obsesión por los resultados.">
     <link rel="icon" type="image/png" href="quantrum_logo.png">
@@ -51,9 +51,10 @@
         
         #chat-messages::-webkit-scrollbar { width: 4px; } #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
         
-        .team-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 1.5rem; transition: all 0.3s ease; backdrop-filter: blur(8px); overflow: hidden; }
+        .team-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 1.5rem; transition: all 0.3s ease; backdrop-filter: blur(8px); overflow: hidden; display: flex; flex-direction: column; height: 100%; }
         .team-card:hover { border-color: #3b82f6; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1); }
-        .team-photo { width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid rgba(59, 130, 246, 0.15); }
+        .team-photo { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid rgba(59, 130, 246, 0.15); background-color: #0f172a; }
+        .p-6 { flex-grow: 1; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -107,7 +108,7 @@
     </header>
 
     <main class="pt-40 pb-24 px-6">
-        <div class="container mx-auto max-w-6xl">
+        <div class="container mx-auto max-w-[1400px]">
             
             <div class="text-center mb-20 relative">
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] z-[-1]"></div>
@@ -123,32 +124,42 @@
                     <h2 class="text-3xl md:text-5xl font-bold mb-4">El <span class="text-gradient">Equipo</span></h2>
                     <p class="text-gray-400 max-w-xl mx-auto font-light">Mentes brillantes obsesionadas con la excelencia técnica y la experiencia de usuario.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     
                     <div class="team-card">
-                        <img src="marisela_profile.jpg" alt="Marisela - Coordinadora de Proyectos Quantrum" class="team-photo">
+                        <img src="johnatan.jpg" alt="Johnatan Becerra" class="team-photo" onerror="this.src='https://placehold.co/400x500/0f172a/3b82f6?text=Johnatan'">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Johnatan Becerra</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Director Ejecutivo & Lead Developer</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Fundador y arquitecto principal. Lidera el desarrollo de soluciones tecnológicas y automatización, asegurando que cada proyecto cumpla con los más altos estándares de la industria.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="jesus.jpg" alt="Jesús Ramírez" class="team-photo" onerror="this.src='https://placehold.co/400x500/0f172a/3b82f6?text=Jesús'">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Jesús Ramírez</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Especialista en Tecnología y Asesoría</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Experto en orientar a los clientes hacia las mejores soluciones digitales. Su visión estratégica garantiza que la tecnología implementada resuelva problemas reales del negocio.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="zulay.jpg" alt="Zulay Linares" class="team-photo" onerror="this.src='https://placehold.co/400x500/0f172a/3b82f6?text=Zulay'">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Zulay Linares</h3>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Especialista en Marketing y Crecimiento</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Estratega experta en captación, prospección y neuromarketing. Diseña campañas persuasivas que conectan la tecnología desarrollada con los clientes finales de forma efectiva.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="marisela_profile.jpg" alt="Marisela" class="team-photo" onerror="this.src='https://placehold.co/400x500/0f172a/3b82f6?text=Marisela'">
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-white mb-1">Marisela</h3>
-                            <p class="text-blue-400 text-sm font-semibold mb-4">Coordinadora de Proyectos & Atención al Cliente</p>
-                            <p class="text-gray-400 text-sm font-light leading-relaxed">El puente perfecto entre tus objetivos y nuestro equipo técnico. Marisela asegura que cada proyecto fluya con precisión, cumpliendo tiempos y superando expectativas con un trato humano excepcional.</p>
-                        </div>
-                    </div>
-
-                    <div class="team-card">
-                        <img src="team_dev_placeholder.jpg" alt="Especialista en Desarrollo Web Quantrum" class="team-photo">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-1">Carlos R.</h3>
-                            <p class="text-blue-400 text-sm font-semibold mb-4">Líder de Desarrollo Full-Stack & PWAs</p>
-                            <p class="text-gray-400 text-sm font-light leading-relaxed">Arquitecto de código obsesionado con el rendimiento. Transforma diseños complejos en aplicaciones web progresivas rápidas, escalables y seguras que emulan la experiencia nativa.</p>
-                        </div>
-                    </div>
-
-                    <div class="team-card">
-                        <img src="team_design_placeholder.jpg" alt="Especialista en Diseño UI/UX Quantrum" class="team-photo">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-1">Elena M.</h3>
-                            <p class="text-blue-400 text-sm font-semibold mb-4">Especialista Senior en Diseño UI/UX</p>
-                            <p class="text-gray-400 text-sm font-light leading-relaxed">Fusiona estética y psicología para crear interfaces intuitivas que cautivan y convierten. Elena asegura que cada interacción sea fluida y memorable, poniendo siempre al usuario en el centro.</p>
+                            <p class="text-blue-400 text-sm font-semibold mb-4">Coordinadora de Proyectos & Atención</p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">El puente perfecto entre tus objetivos y nuestro equipo técnico. Asegura que cada proyecto fluya con precisión, cumpliendo los tiempos con un trato humano excepcional.</p>
                         </div>
                     </div>
 
@@ -218,10 +229,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => { lucide.createIcons(); });
         
-        // URL DEL BACKEND EN RENDER (ASEGÚRATE QUE SEA LA CORRECTA)
         const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
 
-        // LÓGICA DEL CHATBOT
         const chatToggleBtn = document.getElementById('chat-toggle-btn');
         const chatBox = document.getElementById('chat-box');
         const chatInput = document.getElementById('chat-input');
