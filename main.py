@@ -1,94 +1,74 @@
-import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, BackgroundTasks, HTTPException
 from pydantic import BaseModel
-from supabase import create_client, Client
-from groq import Groq
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
 
-app = FastAPI()
-
-# --- CONFIGURACIÓN DE CORS PARA PERMITIR CONEXIÓN DESDE GITHUB PAGES ---
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://placeholder-url.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "placeholder-key")
-
-# LA CLAVE DE GROQ OCULTA EN EL SERVIDOR
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-
-supabase = None
-try:
-    if SUPABASE_URL and not SUPABASE_URL.startswith("https://placeholder"):
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        print("✓ Conexión a Supabase configurada.")
-    else:
-        print("⚠ Supabase en modo simulación.")
-except Exception as e:
-    print(f"⚠ Error Supabase: {e}")
-
-# --- INICIALIZACIÓN OFICIAL DEL CLIENTE DE GROQ ---
-client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
-
+# 1. Definimos la estructura de los datos que envía tu HTML
 class ContactoForm(BaseModel):
-    nombre: str; correo: str; whatsapp: str; proyecto: str
+    nombre: str
+    correo: str
+    whatsapp: str = ""
+    proyecto: str
 
-class ChatRequest(BaseModel):
-    message: str
+# (Aquí asumo que ya tienes tu app = FastAPI() definida arriba en tu código)
 
-@app.post("/api/contacto")
-async def recibir_contacto(form: ContactoForm):
-    if supabase:
-        try:
-            supabase.table("contactos").insert({"nombre": form.nombre, "correo": form.correo, "whatsapp": form.whatsapp, "proyecto": form.proyecto}).execute()
-            return {"status": "success"}
-        except Exception: return {"status": "error"}
-    return {"status": "success"}
+# 2. Función interna que hace el envío real del correo
+def enviar_alerta_correo(datos: ContactoForm):
+    # Usamos variables de entorno por seguridad (para no poner tu clave pública en el código)
+    remitente = os.environ.get("EMAIL_USER")      # info@quantrum1.com
+    password = os.environ.get("EMAIL_PASS")       # Tu clave del correo
+    servidor_smtp = os.environ.get("SMTP_SERVER") # Ej: mail.quantrum1.com
+    puerto = int(os.environ.get("SMTP_PORT", 465))
 
-@app.post("/api/chat")
-async def chat_quantrum(req: ChatRequest):
-    if not GROQ_API_KEY:
-        return {"response": "API Key de Groq no configurada en las variables de entorno de Render."}
-        
-    if not client:
-        return {"response": "Error al inicializar el cliente de Groq."}
+    if not remitente or not password:
+        print("Error: Faltan credenciales de correo en Render")
+        return
+
+    # Armamos el mensaje
+    mensaje = MIMEMultipart("alternative")
+    mensaje["Subject"] = f"🔥 Nuevo Lead Quantrum: {datos.nombre}"
+    mensaje["From"] = remitente
+    mensaje["To"] = remitente # Te lo envías a ti mismo para que llegue a tu bandeja
+
+    # El cuerpo del correo que tú leerás
+    texto = f"""
+    ¡Tienes un nuevo cliente potencial!
     
-    # INSTRUCCIONES ACTUALIZADAS CON LOS DOS NOMBRES Y TONO CERCANO
-    system_instruction = (
-        "Eres 'Chat Quantrum Pro', el asistente virtual de Inteligencia Artificial exclusivo de la "
-        "agencia digital QUANTRUM. Tu única tarea es orientar de forma sumamente breve, concisa y cortés "
-        "(máximo 2 a 3 líneas por respuesta) a los clientes. Habla sobre nuestros servicios: Web, PWA, "
-        "UI/UX, E-Commerce, SEO y APIs. Si preguntan precios, indica que cotizamos a medida e invita a usar WhatsApp. "
-        "Nuestros números de contacto de WhatsApp son +58 412-9550884 y +58 426-5336973. Si preguntan con quién hablar, "
-        "indica que se comunicarán con Johnatan Becerra o Jesús Ramírez, especialistas de nuestro equipo. "
-        "Responde siempre en español, con un tono profesional, persuasivo y tecnológico."
-    )
+    👤 Nombre: {datos.nombre}
+    📧 Email: {datos.correo}
+    📱 WhatsApp: {datos.whatsapp}
     
+    💼 Proyecto / Mensaje:
+    {datos.proyecto}
+    """
+    
+    parte_texto = MIMEText(texto, "plain")
+    mensaje.attach(parte_texto)
+
+    # Conexión al servidor de tu Reseller Hosting
     try:
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": req.message}
-            ],
-            model="llama-3.1-8b-instant",
-            temperature=0.4,
-            max_tokens=150,
-        )
-        return {"response": chat_completion.choices[0].message.content.strip()}
+        if puerto == 465:
+            server = smtplib.SMTP_SSL(servidor_smtp, puerto)
+        else:
+            server = smtplib.SMTP(servidor_smtp, puerto)
+            server.starttls()
+            
+        server.login(remitente, password)
+        server.sendmail(remitente, remitente, mensaje.as_string())
+        server.quit()
+        print("Correo de alerta enviado con éxito.")
     except Exception as e:
-        return {"response": f"Error de enlace en la IA: {str(e)}"}
+        print(f"Error al enviar el correo: {e}")
 
-@app.get("/")
-async def read_index(): return FileResponse('index.html')
-@app.get("/manifest.json")
-async def read_manifest(): return FileResponse('manifest.json')
-@app.get("/sw.js")
-async def read_sw(): return FileResponse('sw.js')
-app.mount("/", StaticFiles(directory="."), name="static")
+# 3. La ruta o "Endpoint" que recibe el llamado de tu página web
+@app.post("/api/contacto")
+async def procesar_contacto(datos: ContactoForm, background_tasks: BackgroundTasks):
+    try:
+        # Usamos background_tasks para que la web le responda "Éxito" al cliente de inmediato, 
+        # mientras Python envía el correo silenciosamente en el fondo.
+        background_tasks.add_task(enviar_alerta_correo, datos)
+        return {"status": "success", "mensaje": "Mensaje recibido"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error procesando el formulario")
