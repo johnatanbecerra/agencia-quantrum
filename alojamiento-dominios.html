@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Planes de Alojamiento y Dominios | QUANTRUM</title>
+    
+    <link rel="icon" type="image/png" href="quantrum_logo.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        background: '#0B1120', 
+                        border: 'rgba(59, 130, 246, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(135deg, #020617 0%, #000000 50%, #082f49 100%);
+            background-attachment: fixed;
+            color: #fff; 
+            scroll-behavior: smooth; 
+            margin: 0; 
+            width: 100%;
+        }
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            z-index: -2; pointer-events: none;
+        }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #93c5fd, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* BOTONES FLOTANTES */
+        #btn-pwa-left {
+            position: fixed !important; bottom: 30px !important; left: 30px !important; z-index: 9999;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        #btn-pwa-left:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5); }
+
+        @keyframes float3d {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        #whatsapp-fixed {
+            position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999;
+            background: radial-gradient(circle at 30% 30%, #5af191, #25d366 50%, #0c7569);
+            width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.7);
+            animation: float3d 3s infinite ease-in-out; border: 1px solid #149c47;
+        }
+        .wa-logo { width: 40px; height: 40px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
+
+        @keyframes floatBotFree { 
+            0% { transform: translateY(0) scale(1); } 
+            50% { transform: translateY(-6px) scale(1.06); } 
+            100% { transform: translateY(0) scale(1); } 
+        }
+        #chat-toggle-btn { 
+            position: fixed !important; bottom: 120px !important; right: 28px !important; z-index: 9999; 
+            background: transparent !important; border: none !important; box-shadow: none !important; 
+            width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; animation: floatBotFree 3.5s infinite ease-in-out; 
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.7)); transition: transform 0.2s ease, filter 0.2s ease; 
+        }
+        #chat-toggle-btn:hover { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)); }
+        #chat-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
+        #chat-messages::-webkit-scrollbar { width: 4px; } 
+        #chat-messages::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            #btn-pwa-left { bottom: 20px !important; left: 20px !important; padding: 10px 16px; font-size: 14px; }
+            #whatsapp-fixed { width: 55px !important; height: 55px !important; bottom: 20px !important; right: 20px !important; }
+            #chat-toggle-btn { width: 60px !important; height: 60px !important; bottom: 90px !important; right: 18px !important; }
+            .wa-logo { width: 30px !important; height: 30px !important; }
+            #chat-box { right: 10px !important; bottom: 160px !important; width: calc(100vw - 20px) !important; height: 400px !important; max-width: 350px; }
+        }
+        .hero-glow { position: absolute; width: 500px; height: 500px; background: rgba(59, 130, 246, 0.12); border-radius: 50%; filter: blur(120px); z-index: -1; }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+    <div class="bg-grid"></div>
+
+    <button id="btn-pwa-left" onclick="alert('Instalando Quantrum App...')">
+        <i data-lucide="download" class="w-5 h-5"></i>
+        <span>Descargar App</span>
+    </button>
+
+    <a href="https://wa.me/584129550884" target="_blank" id="whatsapp-fixed">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="wa-logo">
+    </a>
+
+    <button id="chat-toggle-btn">
+        <img src="bot_logo.png" alt="Bot Quantrum Pro">
+    </button>
+
+    <div id="chat-box" class="hidden fixed bottom-[210px] right-[30px] z-[9999] w-[350px] h-[460px] bg-slate-950/95 border border-blue-500/30 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-950 to-slate-900 px-4 py-3 border-b border-blue-500/20 flex items-center justify-between">
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div><span class="text-xs font-bold tracking-wider text-gradient">CHAT QUANTRUM</span></div>
+            <button id="chat-close-btn" class="text-gray-400 hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs flex flex-col">
+            <div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start leading-relaxed shadow-md">¡Hola! Soy <strong>Chat Quantrum Pro</strong>. ¿Tienes dudas sobre cuál plan de alojamiento o dominio es el ideal para tu proyecto? Cuéntame tu idea.</div>
+        </div>
+        <form id="chat-form-widget" class="p-3 border-t border-blue-500/20 flex gap-2 bg-black/40">
+            <input type="text" id="chat-input" placeholder="Escribe tu consulta..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 outline-none" autocomplete="off">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-2 w-8 h-8 flex items-center justify-center cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-lg border-b border-white/10 shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between relative">
+            <div class="flex items-center gap-4">
+                <img src="quantrum_logo.png" alt="QUANTRUM" class="h-16 md:h-20 w-auto">
+                <span class="text-2xl font-bold text-gradient">QUANTRUM</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-semibold text-gray-200">
+                <a href="index.html#inicio" class="hover:text-blue-400 transition-colors">Inicio</a>
+                <a href="index.html#servicios" class="hover:text-blue-400 transition-colors">Servicios</a>
+                <a href="index.html#por-que" class="hover:text-blue-400 transition-colors">¿Por Qué?</a>
+                <a href="index.html#portafolio" class="hover:text-blue-400 transition-colors">Testimonios</a>
+                <a href="nosotros.html" class="hover:text-blue-400 transition-colors">Nosotros</a>
+                <a href="#contacto" class="hover:text-blue-400 transition-colors">Contacto</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none flex items-center">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-[#020617]/95 backdrop-blur-xl border-b border-white/10 absolute w-full left-0 top-full shadow-2xl">
+            <div class="flex flex-col px-6 py-6 space-y-5 font-semibold text-gray-200 text-center">
+                <a href="index.html#inicio" class="mobile-link block hover:text-blue-400 transition-colors">Inicio</a>
+                <a href="index.html#servicios" class="mobile-link block hover:text-blue-400 transition-colors">Servicios</a>
+                <a href="index.html#por-que" class="mobile-link block hover:text-blue-400 transition-colors">¿Por Qué Elegirnos?</a>
+                <a href="index.html#portafolio" class="mobile-link block hover:text-blue-400 transition-colors">Testimonios</a>
+                <a href="nosotros.html" class="mobile-link block hover:text-blue-400 transition-colors">Nosotros</a>
+                <a href="#contacto" class="mobile-link block hover:text-blue-400 transition-colors">Contacto</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-36 pb-24 px-6 relative z-10 overflow-hidden">
+        <div class="hero-glow top-10 left-10"></div>
+        
+        <div class="container mx-auto text-center max-w-7xl">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Infraestructura <span class="text-gradient">Alta Velocidad</span></h1>
+            <p class="text-lg text-gray-400 mb-16 max-w-2xl mx-auto font-light">Alojamiento corporativo blindado y registro de dominios globales para plataformas de alta exigencia tecnológica.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left mb-24">
+                
+                <div class="bg-[#1E293B]/40 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-8 hover:border-blue-400 transition-all flex flex-col justify-between shadow-xl">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Plan Startup</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6">Ideal para landing pages y sitios corporativos nuevos.</p>
+                        <div class="text-3xl font-bold text-white mb-6">$10 <span class="text-sm font-light text-gray-400">/ mes</span></div>
+                        <ul class="space-y-4 text-sm text-gray-300 font-light mb-8">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> 10 GB Almacenamiento NVMe</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Dominio .com Incluido</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Certificado SSL Gratis</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Soporte Técnico 24/7</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="w-full py-3 bg-blue-600/20 border border-blue-500/40 text-center font-bold rounded-xl text-white hover:bg-blue-600 transition-all block">Adquirir Plan</a>
+                </div>
+
+                <div class="bg-[#1E293B]/80 backdrop-blur-xl border-2 border-blue-500 rounded-3xl p-8 hover:border-blue-400 transition-all flex flex-col justify-between shadow-2xl relative">
+                    <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">Más Elegido</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Plan Business</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6">Optimizado para tiendas E-Commerce y WebApps escalables.</p>
+                        <div class="text-3xl font-bold text-gradient mb-6">$25 <span class="text-sm font-light text-gray-400">/ mes</span></div>
+                        <ul class="space-y-4 text-sm text-gray-200 font-light mb-8">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> 40 GB Almacenamiento NVMe</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Dominio Corporativo Premium</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Copias de Seguridad Diarias</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Infraestructura de CDN Global</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="w-full py-3 bg-blue-600 text-center font-bold rounded-xl text-white hover:bg-blue-500 transition-all block shadow-lg shadow-blue-500/20">Adquirir Plan</a>
+                </div>
+
+                <div class="bg-[#1E293B]/40 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-8 hover:border-blue-400 transition-all flex flex-col justify-between shadow-xl">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Plan Enterprise</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6">Para infraestructuras críticas y bases de datos masivas.</p>
+                        <div class="text-3xl font-bold text-white mb-6">$60 <span class="text-sm font-light text-gray-400">/ mes</span></div>
+                        <ul class="space-y-4 text-sm text-gray-300 font-light mb-8">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Almacenamiento NVMe Ilimitado</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> IPs Dedicadas Incluidas</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Blindaje Anti-DDoS Avanzado</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> Soporte de Arquitecto de Nube</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="w-full py-3 bg-blue-600/20 border border-blue-500/40 text-center font-bold rounded-xl text-white hover:bg-blue-600 transition-all block">Adquirir Plan</a>
+                </div>
+
+            </div>
+        </div>
+
+        <section id="contacto" class="py-12 bg-white/[0.01] backdrop-blur-sm border border-white/5 rounded-3xl max-w-4xl mx-auto">
+            <div class="p-10 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-white">¿Requieres un Servidor <span class="text-gradient">Dedicado?</span></h2>
+                <p class="text-gray-300 font-light mb-8 max-w-lg mx-auto">Si tu proyecto exige especificaciones a medida, estructuramos tu clúster privado de inmediato.</p>
+                <form id="contact-form" class="space-y-6 text-left max-w-2xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Nombre</label><input type="text" name="nombre" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
+                        <div><label class="block text-sm font-semibold mb-2 text-gray-200">Email</label><input type="email" name="correo" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white" required></div>
+                    </div>
+                    <div><label class="block text-sm font-semibold mb-2 text-gray-200">WhatsApp</label><input type="text" name="whatsapp" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none text-white"></div>
+                    <div><label class="block text-sm font-semibold mb-2 text-gray-200">Planes de Interés / Mensaje</label><textarea name="proyecto" rows="4" class="w-full bg-[#0B1120]/80 border border-slate-700 rounded-xl px-4 py-4 focus:border-blue-500 outline-none resize-none text-white" required>Solicito asesoría para el área de Alojamiento y Dominios...</textarea></div>
+                    <button type="submit" class="w-full py-5 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all text-lg">Consultar Con Soporte</button>
+                    <p id="form-status" class="text-center font-bold hidden mt-4"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black/60 backdrop-blur-xl border-t border-blue-900/30 py-20 px-6 relative z-10">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="quantrum_logo.png" alt="QUANTRUM" class="h-12 w-auto">
+                        <span class="text-xl font-bold text-white">QUANTRUM</span>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light">Creando experiencias digitales excepcionales desde 2019.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Servicios</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="desarrollo-web.html" class="hover:text-blue-400 transition-colors">Desarrollo Web</a></li>
+                        <li><a href="ecommerce.html" class="hover:text-blue-400 transition-colors">E-Commerce</a></li>
+                        <li><a href="aplicaciones-pwa.html" class="hover:text-blue-400 transition-colors">Desarrollo PWA</a></li>
+                        <li><a href="diseno-ui-ux.html" class="hover:text-blue-400 transition-colors">Diseño UI/UX</a></li>
+                        <li><a href="optimizacion-seo.html" class="hover:text-blue-400 transition-colors">Optimización SEO</a></li>
+                        <li><a href="backend-apis.html" class="hover:text-blue-400 transition-colors">Backend & APIs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-white">Compañía</h3>
+                    <ul class="text-gray-400 text-sm space-y-3 font-light">
+                        <li><a href="nosotros.html" class="hover:text-blue-400 transition-colors">Nosotros</a></li>
+                        <li><a href="index.html#portafolio" class="hover:text-blue-400 transition-colors">Testimonios</a></li>
+                        <li><a href="#contacto" class="hover:text-blue-400 transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-6 text-sm text-white">Sede Valencia</h3>
+                    <div class="text-gray-400 text-xs space-y-3 font-light">
+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-blue-400"></i> info@quantrum1.com</p>
+                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-blue-400"></i> (+58) 412-9550884</p>
+                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-blue-400"></i> (+58) 426-5336973</p>
+                        <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i> Av. Bolívar Norte</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800 text-center text-gray-500 text-sm font-light">© 2026 QUANTRUM. Todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => { 
+            lucide.createIcons(); 
+            
+            const btnMenu = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            btnMenu.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+            mobileLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); }); });
+        });
+
+        // CHATBOT
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatToggleBtn.addEventListener('click', () => { 
+            chatBox.classList.toggle('hidden'); 
+            if(!chatBox.classList.contains('hidden')) chatInput.focus(); 
+        });
+        document.getElementById('chat-close-btn').addEventListener('click', () => { chatBox.classList.add('hidden'); });
+
+        document.getElementById('chat-form-widget').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            const msg = chatInput.value.trim(); 
+            if (!msg) return;
+            
+            chatMessages.innerHTML += `<div class="bg-blue-600/20 border border-blue-500/30 text-white p-3 rounded-xl max-w-[85%] ml-auto text-right self-end shadow-sm mb-3">${msg}</div>`;
+            chatInput.value = ''; 
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const loadId = 'load-' + Date.now();
+            chatMessages.innerHTML += `<div id="${loadId}" class="bg-slate-900 border border-slate-800 text-gray-400 p-3 rounded-xl max-w-[85%] self-start italic mb-3 flex items-center gap-2">Procesando...</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch('https://agencia-quantrum.onrender.com/api/chat', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ message: msg }) 
+                });
+                const data = await response.json();
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-blue-950/40 border border-blue-900/30 text-gray-200 p-3 rounded-xl max-w-[85%] self-start shadow-md mb-3 leading-relaxed">${data.response}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (err) {
+                document.getElementById(loadId)?.remove();
+                chatMessages.innerHTML += `<div class="bg-red-950/40 border border-red-900/30 text-red-400 p-3 rounded-xl max-w-[85%] self-start mb-3">Error de conexión.</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+        // FORMULARIO DE CONTACTO (A TELEGRAM)
+        const BACKEND_URL = 'https://agencia-quantrum.onrender.com';
+        document.getElementById('contact-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('form-status');
+            const data = Object.fromEntries(new FormData(e.target));
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/contacto`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if(res.ok) {
+                    status.innerText = "✓ Solicitud enviada. Un asesor se comunicará contigo.";
+                    status.className = "text-center font-bold text-blue-400 block mt-4";
+                    e.target.reset();
+                }
+            } catch {
+                status.innerText = "✗ Error de conexión. Intenta por WhatsApp.";
+                status.className = "text-center font-bold text-red-500 block mt-4";
+            }
+        };
+    </script>
+</body>
+</html>
