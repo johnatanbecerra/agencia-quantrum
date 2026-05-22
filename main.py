@@ -31,6 +31,10 @@ class ContactoForm(BaseModel):
 
 # Función para enviar alerta por Telegram
 async def enviar_alerta_telegram(datos: ContactoForm):
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        print("ERROR: Faltan TELEGRAM_TOKEN o TELEGRAM_CHAT_ID en Render")
+        return
+
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     texto = (
         f"🔥 **Nuevo Lead Quantrum**\n\n"
@@ -39,37 +43,44 @@ async def enviar_alerta_telegram(datos: ContactoForm):
         f"📱 *WhatsApp:* {datos.whatsapp}\n\n"
         f"💼 *Proyecto:* {datos.proyecto}"
     )
+    
     try:
         async with httpx.AsyncClient() as client_http:
-            await client_http.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": texto, "parse_mode": "Markdown"})
+            response = await client_http.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": texto, "parse_mode": "Markdown"})
+            if response.status_code == 200:
+                print("Telegram enviado con éxito")
+            else:
+                print(f"Error Telegram: {response.text}")
     except Exception as e:
-        print(f"Error Telegram: {e}")
+        print(f"Error crítico enviando Telegram: {str(e)}")
 
 @app.post("/api/chat")
 async def chat_quantrum(req: ChatRequest):
     if not client:
         raise HTTPException(status_code=500, detail="Falta API KEY de GROQ")
     
-    # --- AQUÍ ESTÁ EL CAMBIO DE LÓGICA ---
+    # --- NUEVAS REGLAS ESTRICTAS PARA EL BOT ---
     system_instruction = """
     Eres 'Chat Quantrum Pro', el asistente virtual de QUANTRUM, una Agencia Digital de Élite. 
     Eres un consultor experto y profesional.
     
     Tus reglas estrictas de comunicación:
-    1. Nunca menciones tiempos de creación en 'segundos o minutos'. Eso resta valor profesional a nuestro trabajo artesanal.
-    2. Cuando pregunten por tiempos de entrega, responde siempre así: 'En Quantrum, la calidad y el detalle son nuestra prioridad. Por lo general, un proyecto web profesional toma entre 1 a 2 semanas para cobrar vida, estar totalmente optimizado y listo para mostrarse al mundo con el mayor impacto.'
-    3. Enfatiza que cada desarrollo es personalizado, robusto y escalable.
-    4. Responde siempre de forma profesional, clara, concisa y orientada a la venta.
+    1. TIEMPOS: Nunca menciones tiempos de creación en 'segundos o minutos'. Responde siempre: 'Por lo general, un proyecto web profesional toma entre 1 a 2 semanas para cobrar vida, estar totalmente optimizado y listo para mostrarse al mundo.'
+    2. PRECIOS DE DESARROLLO Y DISEÑO (MUY IMPORTANTE): Tienes estrictamente PROHIBIDO inventar precios altos de miles de dólares (como $2500, $4500 o $7000). Si te preguntan cuánto cuesta una página web, un rediseño o una tienda, responde exactamente esto: 'En Quantrum ofrecemos planes muy accesibles y competitivos, ideales para empresas en crecimiento y emprendedores. Como cada proyecto es único, preferimos ajustarnos a tus necesidades. ¡Déjanos tus datos en el formulario o escríbenos al WhatsApp y un asesor te dará una cotización excelente hoy mismo!'
+    3. PRECIOS DE HOSTING: Los únicos precios exactos que puedes dar son los de nuestros servidores: Plan Startup ($10/mes), Business ($25/mes) y Enterprise ($60/mes).
+    4. Enfatiza que cada desarrollo es personalizado, robusto y escalable.
+    5. Responde siempre de forma profesional, amable, concisa y orientada a cerrar la venta invitando al cliente a contactarnos.
     """
     
     try:
+        # Nota: Bajé un poco la temperatura (0.3) para que sea más obediente a las reglas y menos creativo inventando cosas.
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": req.message}
             ],
             model="llama-3.1-8b-instant",
-            temperature=0.4
+            temperature=0.3
         )
         return {"response": chat_completion.choices[0].message.content}
     except Exception as e:
